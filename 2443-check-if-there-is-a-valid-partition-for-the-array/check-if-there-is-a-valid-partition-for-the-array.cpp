@@ -6,9 +6,9 @@ public:
      bool a=false,b=false,c=false;
      if(i+1<n && nums[i]==nums[i+1])
       { a=solve(nums,i+2,n,dp);}
-     if(i+2<n && nums[i]==nums[i+1] && nums[i]==nums[i+2])
+     if(!a && i+2<n && nums[i]==nums[i+1] && nums[i]==nums[i+2])
       { b=solve(nums,i+3,n,dp);}
-     if(i+2<n && nums[i]==nums[i+1]-1 && nums[i+1]==nums[i+2]-1)
+     if(!b && i+2<n && nums[i]==nums[i+1]-1 && nums[i+1]==nums[i+2]-1)
       { c=solve(nums,i+3,n,dp);}
      dp[i]=a || b || c;}
      return dp[i];
