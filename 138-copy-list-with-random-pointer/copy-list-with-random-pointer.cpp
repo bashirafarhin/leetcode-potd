@@ -41,8 +41,7 @@ public:
         curr=head;
         ncurr=nhead;
         while(ncurr !=NULL){
-         Node* x=curr->random? map[curr->random]: NULL;
-         ncurr->random=x;
+         ncurr->random=curr->random? map[curr->random]: NULL;
          ncurr=ncurr->next;
          curr=curr->next;
         }
