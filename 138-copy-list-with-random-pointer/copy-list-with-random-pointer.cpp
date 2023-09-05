@@ -17,8 +17,7 @@ public:
 class Solution {
 public:
     Node* copyRandomList(Node* head) {
-        unordered_map<Node*,Node*>omap;
-        unordered_map<Node*,Node*>nmap;
+        unordered_map<Node*,Node*>map;
 
         Node* nhead=NULL;
         Node* ncurr=NULL;
@@ -35,16 +34,17 @@ public:
               ncurr->next=node;
               ncurr=ncurr->next;
           }
-         omap[curr]=ncurr;
-         nmap[ncurr]=curr;
+         map[curr]=ncurr;
          curr=curr->next;
         }
         //copy random pointer
+        curr=head;
         ncurr=nhead;
         while(ncurr !=NULL){
-         Node* x=omap[nmap[ncurr]->random];
+         Node* x=curr->random? map[curr->random]: NULL;
          ncurr->random=x;
          ncurr=ncurr->next;
+         curr=curr->next;
         }
         return nhead;
     }
