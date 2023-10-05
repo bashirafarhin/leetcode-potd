@@ -10,21 +10,20 @@
  * };
  */
 class Solution {
-    void in_order(TreeNode* root,vector<TreeNode*> &inorder){
-        if(root==NULL){return;}
-        inorder.push_back(root);
-        in_order(root->left,inorder);
-        in_order(root->right,inorder);
+    TreeNode* solve(TreeNode* root){
+        if(root==NULL || root->left==NULL && root->right==NULL){return root;}
+        TreeNode* x=root->right;
+        if(root->left !=NULL){
+           root->right=solve(root->left);
+           TreeNode *curr=root->right;
+           while(curr->right !=NULL){curr=curr->right;}
+            curr->right=x;
+            root->left=NULL;}
+        solve(x);
+        return root;
     }
 public:
-    //brute force solution
     void flatten(TreeNode* root) {
-     vector<TreeNode*> inorder;
-     in_order(root,inorder);
-     int n=inorder.size();
-     for(int i=0;i<n-1;i++){
-         inorder[i]->left=NULL;
-         inorder[i]->right=inorder[i+1];
-     }
+     solve(root);
     }
 };
