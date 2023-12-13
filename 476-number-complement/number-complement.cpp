@@ -1,19 +1,17 @@
 class Solution {
 public:
     int findComplement(int num) {
-     int pos=0;
+     if(num==0) return 1;
+     if(num==1) return 0;
      int n=num;
+     int mask=0;
      while(n !=0){
-         pos++;n>>=1;
+         n>>=1;
+         mask<<=1;
+         mask=mask | 1;
+         
      }
-     int result=0;
-     int i=0;
-     while(pos>0){
-     if(!(num & 1)){result+=1<<i;}
-     num>>=1;
-     i++;
-     pos--;}
-     return result;
+     return (~num) &mask;
     }
 
 };
