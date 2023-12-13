@@ -5,7 +5,7 @@ public:
             return false;
         if (n == 1)
             return true;
-       double x=log (n)/log (4);
+       float x=log (n)/log (4);
        return x==(int)x;
 
 
