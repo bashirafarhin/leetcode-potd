@@ -7,17 +7,10 @@ public:
      vector<int> Colz(Col,0);
 
      for(int i=0;i<Row;i++){
-         int count0=0;
          for(int j=0;j<Col;j++){
-           if(!grid[i][j]){count0++;}
-         }
-         Rowz[i]=count0;}
-     for(int i=0;i<Col;i++){
-         int count0=0;
-         for(int j=0;j<Row;j++){
-           if(!grid[j][i]){count0++;}
-         }
-         Colz[i]=count0;}
+           if(!grid[i][j]){Rowz[i]++;Colz[j]++;}
+         }}
+   
 
      for(int i=0;i<Row;i++){
          for(int j=0;j<Col;j++){
