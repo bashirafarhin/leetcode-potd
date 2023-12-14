@@ -3,7 +3,6 @@ public:
     vector<vector<int>> onesMinusZeros(vector<vector<int>>& grid) {
      int Row=grid.size();
      int Col=grid[0].size();
-     vector<vector<int>> diff(Row,vector<int>(Col,0));
      vector<int> Rowz(Row,0);
      vector<int> Colz(Col,0);
 
@@ -22,7 +21,7 @@ public:
 
      for(int i=0;i<Row;i++){
          for(int j=0;j<Col;j++){
-        diff[i][j]=Col+Row-2*Rowz[i]-2*Colz[j] ; }}
-     return diff;
+        grid[i][j]=Col+Row-2*Rowz[i]-2*Colz[j] ; }}
+     return grid;
     }
 };
