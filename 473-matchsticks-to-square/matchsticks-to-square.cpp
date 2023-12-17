@@ -14,23 +14,22 @@ class Solution {
 
 
      if(i<0 || sum<0){return false;}
-
      bool take=false;
-
      flagarr[i]=1;
      take=f(arr,flagarr,i-1,sum-arr[i],times,side);
      flagarr[i]=0;
      bool nottake=f(arr,flagarr,i-1,sum,times,side);
      return take || nottake;
-
     }
+
 public:
     bool makesquare(vector<int>& matchsticks) {
     int n=matchsticks.size();
     if(n<4){return false;}
     int sum=0;
     for(int num : matchsticks){sum+=num;}
-    if(sum%4 !=0){return false;}
+    int max=*max_element(matchsticks.begin(),matchsticks.end());
+    if(sum%4 !=0 || max>(sum/4) ){return false;}
     vector<int>flagarr(n,0);
     return f(matchsticks,flagarr,n-1,sum/2,1,sum/4);
    
