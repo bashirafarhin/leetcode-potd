@@ -4,7 +4,7 @@ class Solution {
         if(target==0){return backtrack(arr,check,0,OGtarget,k-1,OGtarget);}
         if(i==arr.size()){return false;}
         bool take=false;
-       if (! (check[i] || arr[i] > target || (i > 0 and arr[i] == arr[i-1] && !check[i-1]) ) ){
+       if (! (check[i] || arr[i] > target || (i > 0 && arr[i] == arr[i-1] && !check[i-1]) ) ){
     
          check[i]=1;
          take=backtrack(arr,check,i+1,target-arr[i],k,OGtarget);
