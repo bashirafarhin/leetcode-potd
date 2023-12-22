@@ -13,7 +13,7 @@ public:
          bool flag=true;
          if((seat & 0b0000111100)==0 )//2345
           {ans+=1; flag=false;}
-         if( (seat & 1111000000 )==0 )//6789
+         if( (seat & 0b1111000000 )==0 )//6789
           {ans+=1; flag=false;}
         
          if(flag && ((seat & 0b0011110000)==0) )//4567
