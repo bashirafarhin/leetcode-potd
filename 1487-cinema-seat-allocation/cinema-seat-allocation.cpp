@@ -14,9 +14,7 @@ public:
             if(!contains[2] && !contains[3] && !contains[4] && !contains[5]){ans++;flag=1;}
             if(!contains[6] && !contains[7] && !contains[8] && !contains[9]){ans++;flag=1;}
             if(!flag && !contains[4] && !contains[5] && !contains[6] && !contains[7]){ans++;}}
-            
-        
-    
+            //doing this as 2 families can seated only if seated in 2345 6789
     return ans;
     }
 };
