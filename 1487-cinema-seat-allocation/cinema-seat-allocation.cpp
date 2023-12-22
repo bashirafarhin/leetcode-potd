@@ -10,10 +10,12 @@ public:
     for(auto it : mp){
             vector<int> contains(11,0);
             for(auto col : it.second){contains[col]=1;}
-            int flag=0;
-            if(!contains[2] && !contains[3] && !contains[4] && !contains[5]){ans++;flag=1;}
-            if(!contains[6] && !contains[7] && !contains[8] && !contains[9]){ans++;flag=1;}
-            if(!flag && !contains[4] && !contains[5] && !contains[6] && !contains[7]){ans++;}}
+            int flag1=0;
+            int flag2=0;
+            if(!contains[2] && !contains[3] && !contains[4] && !contains[5]){ans++;flag1=1;}
+            if(!flag1 && !contains[4] && !contains[5] && !contains[6] && !contains[7]){ans++;flag2=1;}
+            if(!flag2 && !contains[6] && !contains[7] && !contains[8] && !contains[9]){ans++;}
+            }
             //doing this as 2 families can seated only if seated in 2345 6789
     return ans;
     }
