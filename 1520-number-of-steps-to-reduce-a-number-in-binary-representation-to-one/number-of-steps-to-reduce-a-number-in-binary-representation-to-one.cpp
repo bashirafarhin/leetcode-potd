@@ -1,12 +1,5 @@
 class Solution {
-    bool isnumber1(string s){
-        int n=s.length();
-        if(s[n-1]=='0'){return false;}
-        for(int i=n-2;i>=0;i--){
-         if(s[i]=='1'){return false;}
-        }
-        return true;
-    }
+
     string addOne(string s){
         int carry=1;
         int n=s.length();
@@ -23,9 +16,8 @@ class Solution {
  
 public:
     int numSteps(string s) {
-     if (s == "1") {return 0;}
     int steps=0;
-    while(!isnumber1(s)){
+    while(s.size()>1){
         if(s.back()=='1'){s=addOne(s);}
         else{s.pop_back();}
         steps++;
