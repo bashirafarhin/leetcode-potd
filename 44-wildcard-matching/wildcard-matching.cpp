@@ -23,7 +23,7 @@ public:
 
         int ls=s.length();
         int lp=p.length();
-        vector<vector<int>> dp(lp+1,vector<int>(ls+1,false));
+        vector<vector<bool>> dp(lp+1,vector<bool>(ls+1,false));
 
 
         for(int i=lp;i>=0;i--){
