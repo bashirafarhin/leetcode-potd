@@ -1,27 +1,22 @@
 class Solution {
-    int solve(int i,vector<int>& jobDifficulty,int d,vector<vector<int>> &dp){
-        if(d==0){
-            if(i==jobDifficulty.size()){return 0;}
-            return INT_MAX;
-        }
-        if(dp[i][d] !=-1){return dp[i][d];}
-        int ans=INT_MAX;
-        int maxDifficulty=0; //max jobDifficulty done on d day
-        int n=jobDifficulty.size();
-        for(int j=i;j<n;j++){
-         maxDifficulty=max(maxDifficulty ,jobDifficulty[j]);
-         int val=solve(j+1,jobDifficulty,d-1,dp);
-         if(val !=INT_MAX){
-             ans=min(val+maxDifficulty , ans);
-         }
-        }
-        return dp[i][d]=ans;
-    }
 public:
     int minDifficulty(vector<int>& jobDifficulty, int d) {
      int n=jobDifficulty.size();
      if(n<d){return -1;}
-     vector<vector<int>> dp(n+1,vector<int>(d+1,-1));
-     return solve(0,jobDifficulty,d,dp);
+     vector<vector<int>> dp(n+1,vector<int>(d+1,INT_MAX));
+     dp[n][0]=0;
+     for(int i=n;i>=0;i--){
+         for(int day=1;day<=d;day++){
+             int ans=INT_MAX;
+             int maxDifficulty=0; //max jobDifficulty done on d day
+             for(int j=i;j<n;j++){
+              maxDifficulty=max(maxDifficulty ,jobDifficulty[j]);
+              if(dp[j+1][day-1] !=INT_MAX){
+                ans=min(dp[j+1][day-1]+maxDifficulty , ans);}
+             }
+             dp[i][day]=ans;
+           }
+     }
+     return dp[0][d];
     }
 };
