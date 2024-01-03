@@ -13,21 +13,21 @@ class Solution {
     }
 
 
-    void solve(int open,int close,vector<string> &arr,string s,int n,vector<vector<int>>& dp){
-     if(open==0 && close==0){
+    void solve(int open,int close,vector<string> &ans,string s,int n){
+     if(open==n && close==n){
          if(ispar(s)){ //check if isvalid parenthesis or not
-             arr.push_back(s);}
+             ans.push_back(s);}
          return ;
      }
      
-     if(open !=0){
+     if(open !=n){
          s+='(';
-         solve(open-1,close,arr,s,n,dp);
+         solve(open+1,close,ans,s,n);
          s.pop_back();
      }
-     if(open !=n && close !=0){
+     if(open !=0 && close !=n){
          s+=')';
-         solve(open,close-1,arr,s,n,dp);
+         solve(open,close+1,ans,s,n);
          s.pop_back();
      }
      
@@ -35,9 +35,8 @@ class Solution {
     }
 public:
     vector<string> generateParenthesis(int n) {
-        vector<string> arr;
-        vector<vector<int>> dp(n,vector<int>(n,-1));
-        solve(n,n,arr,"",n,dp);
-        return arr;
+        vector<string> ans; //to store answer
+        solve(0,0,ans,"",n);
+        return ans;
     }
 };
