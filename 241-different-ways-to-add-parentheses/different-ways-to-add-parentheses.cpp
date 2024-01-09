@@ -1,5 +1,5 @@
 class Solution {
-    vector<int> solve(string s){
+    vector<int> solve(string s,unordered_map<string,vector<int>>& dp){
          if(s.length()==2){
              int n=(s[0]-'0')*10+(s[1]-'0');
             return {n};}
@@ -7,14 +7,17 @@ class Solution {
         if(s.length()==1){
             int n=s[0]-'0';
             return {n};}
+
+        if(dp.count(s)){return dp[s];}
+
         vector<int> ans;
         int n=s.length();
         for(int i=0;i<n;i++){
             if(s[i]=='+' || s[i]=='-' || s[i]=='*'){
                 string left=s.substr(0,i);
                 string right=s.substr(i+1);
-                vector<int>l=solve(left);
-                vector<int>r=solve(right);
+                vector<int>l=solve(left,dp);
+                vector<int>r=solve(right,dp);
                 for(int val1 : l){
                     for(int val2 : r){
                         if(s[i]=='+'){ ans.push_back(val1+val2); }
@@ -24,11 +27,12 @@ class Solution {
                 }
             }
         }
-        return ans;
+        return dp[s]=ans;
     }
 public:
     vector<int> diffWaysToCompute(string expression) {
-        return solve(expression);
+        unordered_map<string,vector<int>> dp;
+        return solve(expression,dp);
 
     }
 };
