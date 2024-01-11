@@ -1,0 +1,14 @@
+class Solution {
+public:
+    bool isUgly(int n) {
+      
+        while(n >1){
+            if( !(n %2) ){n =n/2;}
+            else if( !(n %3) ){n =n/3;}
+            else if( !(n %5) ){n =n/5;}
+            else{break;}
+        }
+
+        return n==1 ? true : false;
+    }
+};
