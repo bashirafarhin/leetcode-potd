@@ -9,7 +9,7 @@ public:
         if(inc==1 && nums[i]<nums[i+1]){    
             take=1+solve(i+1,0,nums,dp);
         }
-        if(inc==0 && nums[i]>nums[i+1]){    
+        else if(inc==0 && nums[i]>nums[i+1]){    
             take=1+solve(i+1,1,nums,dp);
         }        
         int nottake=solve(i+1,inc,nums,dp);
