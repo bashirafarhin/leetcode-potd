@@ -17,7 +17,16 @@ public:
     }
     int wiggleMaxLength(vector<int>& nums) {
         int n=nums.size();
+        if(n==1){return 1;}
         vector<vector<int>> dp(n+1,vector<int>(2,-1));
-        return max( solve(0,0,nums,dp),solve(0,1,nums,dp) );
+        for(int i=0;i<n-1;i++){
+            if(nums[i]<nums[i+1]){
+                return solve(0,1,nums,dp);
+            }
+            if(nums[i]>nums[i+1]){
+                return solve(0,0,nums,dp);
+            }
+        }
+        return 1;
     }
 };
