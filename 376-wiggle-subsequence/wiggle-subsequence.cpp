@@ -1,32 +1,17 @@
 class Solution {
 public:
-    int solve(int i,int inc,vector<int>& nums,vector<vector<int>>&dp){
-        if(i==nums.size()-1){
-            return 1;
-        }
-        if(dp[i][inc] !=-1){return dp[i][inc];}
-        int take=0;
-        if(inc==1 && nums[i]<nums[i+1]){    
-            take=1+solve(i+1,0,nums,dp);
-        }
-        else if(inc==0 && nums[i]>nums[i+1]){    
-            take=1+solve(i+1,1,nums,dp);
-        }        
-        int nottake=solve(i+1,inc,nums,dp);
-        return dp[i][inc]=max(take,nottake);
-    }
     int wiggleMaxLength(vector<int>& nums) {
         int n=nums.size();
-        if(n==1){return 1;}
-        vector<vector<int>> dp(n+1,vector<int>(2,-1));
+        int inc=1; //we want maximum alternating sequence
+        int dec=1;
         for(int i=0;i<n-1;i++){
-            if(nums[i]<nums[i+1]){
-                return solve(0,1,nums,dp);
-            }
             if(nums[i]>nums[i+1]){
-                return solve(0,0,nums,dp);
+                inc=dec+1;
+            }
+            else if(nums[i]<nums[i+1]){
+                dec=inc+1;
             }
         }
-        return 1;
+        return max(inc,dec);
     }
 };
