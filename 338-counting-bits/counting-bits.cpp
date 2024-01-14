@@ -1,17 +1,14 @@
 class Solution {
 public:
     vector<int> countBits(int n) {
-        vector<int> ans;
-        int num=0,count=0,i=0;
-        while(num !=n+1){
-            count=0;
-            i=num;
-            while(i !=0){
-                i=(i & i-1);
-                count++;
+        vector<int> dp(n+1,0);
+        for(int i=0;i<=n;i++){
+            if(i & 1){ //if odd number
+             dp[i]=dp[i/2]+1;
+            } else {
+             dp[i]=dp[i/2];
             }
-            ans.push_back(count);
-            num++;}
-            return ans;
+        }
+        return dp;
     }
 };
