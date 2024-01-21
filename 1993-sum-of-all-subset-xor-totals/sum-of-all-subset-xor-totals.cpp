@@ -1,22 +1,22 @@
 class Solution {
-    void f(int i,vector<int> &nums,vector<int> & arr,int &ans){
-        if(i==nums.size()){
-            int val=0;
-            for(int i=0;i<arr.size();i++){
-             val=val^arr[i];}
-            ans+=val;
-            return ;}
-        arr.push_back(nums[i]);
-        f(i+1,nums,arr,ans);
-        arr.pop_back();
-        f(i+1,nums,arr,ans);
-        return ;
-    }
 public:
     int subsetXORSum(vector<int>& nums) {
-        vector<int> arr;
+        int n=nums.size();
+        int l=1<<n;
         int ans=0;
-        f(0,nums,arr,ans);
+        for(int i=1;i<l;i++){
+            int num=i;
+            int curr=0;
+            int m=n-1;
+            while(num>0){
+                if(num & 1){
+                 curr=curr^nums[m];
+                }
+                num=num>>1;
+                m--;
+            }
+            ans+=curr;
+        }
         return ans;
     }
 };
