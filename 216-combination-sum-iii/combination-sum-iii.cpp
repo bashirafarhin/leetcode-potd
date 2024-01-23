@@ -3,7 +3,7 @@ class Solution {
         if(target==0 && k==0){
             ans.push_back(path);
             return;}
-        if(k==0 || i==10){return ;}
+        // if(k==0 || i==10){return ;}
         for(int j=i;j<=9;j++){
             path.push_back(j);
             solve(j+1,k-1,target-j,path,ans);
