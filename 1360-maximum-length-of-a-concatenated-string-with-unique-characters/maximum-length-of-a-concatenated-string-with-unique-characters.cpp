@@ -1,13 +1,17 @@
 class Solution {
     int solve(int i,vector<string>& arr,string& s){
-        if(i==arr.size()){return s.size();}
-        string combined=arr[i]+s;
-        unordered_set<char> st(combined.begin(),combined.end());
-        int take=0;
-        if(st.size()==combined.size()){
-           take=solve(i+1,arr,combined);
-        }
+
+        unordered_set<char> st(s.begin(),s.end());
+        if(st.size() !=s.size()){return -INT_MAX;} //if characters are not unique
+
+        if(i==arr.size()){return 0;}
+
+        for(char c : arr[i]) { s+=c; }
+        int take=arr[i].size()+solve(i+1,arr,s);
+        
+        for(char c : arr[i]) { s.pop_back(); } //backtrack
         int nottake=solve(i+1,arr,s);
+
         return max(take,nottake);
 
     }
