@@ -1,5 +1,5 @@
 class Solution {
-    int solve(int i,vector<string>& arr,string s){
+    int solve(int i,vector<string>& arr,string& s){
         if(i==arr.size()){return s.size();}
         string combined=arr[i]+s;
         unordered_set<char> st(combined.begin(),combined.end());
@@ -13,6 +13,7 @@ class Solution {
     }
 public:
     int maxLength(vector<string>& arr) {
-        return solve(0,arr,"");
+        string s="";
+        return solve(0,arr,s);
     }
 };
