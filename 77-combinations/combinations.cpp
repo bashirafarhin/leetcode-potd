@@ -3,12 +3,13 @@ class Solution {
         if(k==0){
             ans.push_back(path);
             return;}
+        if(i>n){return ;}
 
-        for(int j=i;j<=n;j++){
-            path.push_back(j);
-            solve(j+1,k-1,n,path,ans);
-            path.pop_back();
-        }
+        path.push_back(i);
+        solve(i+1,k-1,n,path,ans);
+        path.pop_back();
+
+        solve(i+1,k,n,path,ans);
         return;
     }
 public:
