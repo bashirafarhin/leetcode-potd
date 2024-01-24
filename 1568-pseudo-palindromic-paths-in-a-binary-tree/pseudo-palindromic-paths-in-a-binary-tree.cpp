@@ -11,12 +11,11 @@
  */
 class Solution {
     int check(vector<int>&freq){
-        bool odd=true;
+        int odd=0;
         for(int i=1;i<=9;i++){
-            if(freq[i]==0){continue;}
             if(freq[i] & 1){
-                if(odd){odd=false;}
-                else{return 0;}
+                odd++;
+                if(odd==2){return 0;}
             }
         }
         return 1;
