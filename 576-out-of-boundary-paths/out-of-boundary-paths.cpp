@@ -8,8 +8,7 @@ class Solution {
         long long int up=solve(Row,Col,maxMove-1,r-1,c,dp)%(mod);
         long long int right=solve(Row,Col,maxMove-1,r,c+1,dp)%(mod);
         long long int down=solve(Row,Col,maxMove-1,r+1,c,dp)%(mod);
-        long long int a=(left+up+right+down) %mod;
-        return dp[r][c][maxMove]=a;
+        return dp[r][c][maxMove]=(left+up+right+down) %mod;
     }
 public:
     int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
