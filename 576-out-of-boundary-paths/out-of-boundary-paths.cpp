@@ -1,18 +1,26 @@
 class Solution {
     int mod=1e9+7;
-    int solve(int Row,int Col,int maxMove,int r,int c,vector<vector<vector<int>>>&dp){
-        if(r==Row || c==Col || r<0 || c<0){return 1;}
-        if(maxMove==0){return 0;}
-        if(dp[r][c][maxMove] !=-1){return dp[r][c][maxMove];}
-        long long int left=solve(Row,Col,maxMove-1,r,c-1,dp)%(mod);
-        long long int up=solve(Row,Col,maxMove-1,r-1,c,dp)%(mod);
-        long long int right=solve(Row,Col,maxMove-1,r,c+1,dp)%(mod);
-        long long int down=solve(Row,Col,maxMove-1,r+1,c,dp)%(mod);
-        return dp[r][c][maxMove]= (((down + up) % mod + right) % mod + left)% mod;
-    }
 public:
     int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
-        vector<vector<vector<int>>>dp(m,vector<vector<int>>(n,vector<int>(maxMove+1,-1)));
-        return solve(m,n,maxMove,startRow,startColumn,dp);
+        vector<vector<vector<int>>>dp(m,vector<vector<int>>(n,vector<int>(maxMove+2,0)));
+        int ans=0;
+        dp[startRow][startColumn][1]=1;
+        for(int move=1;move<=maxMove;move++){
+            for(int x=0;x<m;x++){
+                for(int y=0;y<n;y++){
+                    if(x==0) ans=( ans+dp[x][y][move] ) % mod; //boundary
+                    if(x==m-1) ans=( ans+dp[x][y][move] ) % mod; //boundary
+                    if(y==0) ans=( ans+dp[x][y][move] ) % mod; //boundary
+                    if(y==n-1) ans=( ans+dp[x][y][move] ) % mod; //boundary
+                    
+                    dp[x][y][move+1]=( ( (x>0 ? dp[x-1][y][move] : 0) + //up
+                                       (x<m-1 ? dp[x+1][y][move] : 0) ) % mod+ //down
+                                       ( (y>0 ? dp[x][y-1][move] : 0) + //left
+                                       (y<n-1 ? dp[x][y+1][move] : 0) ) % mod //right
+                     ) % mod;
+                }
+            }
+        }
+        return ans % mod;
     }
 };
