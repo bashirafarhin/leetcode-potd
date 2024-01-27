@@ -1,49 +1,49 @@
 
 class Solution {
-    int countNodes(TreeNode* root){
-     if(root==NULL){return 0;}
-        return countNodes(root->left)+countNodes(root->right)+1;
+    void parentPointers(TreeNode* root,unordered_map<TreeNode*,TreeNode*>&parent){
+        if(root==NULL){return;}
+        if(root->left != NULL){ parent[root->left]=root; }
+        if(root->right != NULL){ parent[root->right]=root; }
+        parentPointers(root->left,parent);
+        parentPointers(root->right,parent);
     }
 
-    void fillGraph(TreeNode* root,vector<vector<int>>& graph){
-     if(root==NULL){return ;}
-     if(root->left !=NULL){
-         graph[root->val].push_back(root->left->val);
-         graph[root->left->val].push_back(root->val);}
-     if(root->right !=NULL){
-         graph[root->val].push_back(root->right->val);
-         graph[root->right->val].push_back(root->val);}
-     fillGraph(root->left,graph);
-     fillGraph(root->right,graph);
-    }
-
-    vector<int> bfs(int src,vector<vector<int>>& graph,int k){
-        queue<pair<int,int>> q; //{node,distance}
-        vector<int>vis(graph.size()+1,0);
-        vector<int> ans;
-        q.push({src,0});
+    vector<int> bfs(TreeNode* root,unordered_map<TreeNode*,TreeNode*>&parent,int k){
+        queue<TreeNode*> q;
+        unordered_set<TreeNode*>vis; //to store visited node
+        q.push(root);
+        int level=0;
+        vis.insert(root);
         while(!q.empty()){
             int size=q.size();
+            if(level == k){ break;}
+            level++;
             while(size--){
-               int node=q.front().first;
-               int dist=q.front().second;
+               TreeNode* node=q.front();
                q.pop();
-               vis[node]=1;
-               if(dist==k){
-                   ans.push_back(node);
-                   continue;}
-               for(int neigh : graph[node]){
-                   if(!vis[neigh]){ q.push({neigh,dist+1});}
-               }
+               if(node->left && vis.find(node->left)==vis.end()){
+                      q.push(node->left);
+                      vis.insert(node->left);}
+               if(node->right && vis.find(node->right)==vis.end()){
+                   q.push(node->right);
+                   vis.insert(node->right);}
+               if(parent[node] && vis.find(parent[node])==vis.end()){
+                   q.push(parent[node]); 
+                   vis.insert(parent[node]);}           
             }
         }
+
+        vector<int> ans;
+        while(!q.empty()){
+            ans.push_back(q.front()->val);
+            q.pop();}
         return ans;
     }
+
 public:
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-        int n=countNodes(root);
-        vector<vector<int>> graph(n+1);
-        fillGraph(root,graph);       
-        return bfs(target->val,graph,k);
+        unordered_map<TreeNode*,TreeNode*>parent ; //map to store parent pointers
+        parentPointers(root,parent);
+        return bfs(target,parent,k);
     }
 };
