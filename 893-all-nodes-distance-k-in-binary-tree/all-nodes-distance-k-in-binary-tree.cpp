@@ -1,12 +1,4 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
+
 class Solution {
     int countNodes(TreeNode* root){
      if(root==NULL){return 0;}
@@ -25,32 +17,33 @@ class Solution {
      fillGraph(root->right,graph);
     }
 
-    void dfs(int src,vector<vector<int>>& graph,vector<int>&vis,vector<int>&ans,int dist){
-        vis[src]=1;
-        if(dist==0){
-            ans.push_back(src);
-            return;}
-        
-        for(int neigh : graph[src]){
-            if(!vis[neigh]){
-                dfs(neigh,graph,vis,ans,dist-1);
+    vector<int> bfs(int src,vector<vector<int>>& graph,int k){
+        queue<pair<int,int>> q; //{node,distance}
+        vector<int>vis(graph.size()+1,0);
+        vector<int> ans;
+        q.push({src,0});
+        while(!q.empty()){
+            int size=q.size();
+            while(size--){
+               int node=q.front().first;
+               int dist=q.front().second;
+               q.pop();
+               vis[node]=1;
+               if(dist==k){
+                   ans.push_back(node);
+                   continue;}
+               for(int neigh : graph[node]){
+                   if(!vis[neigh]){ q.push({neigh,dist+1});}
+               }
             }
         }
-        return;
+        return ans;
     }
 public:
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
         int n=countNodes(root);
         vector<vector<int>> graph(n+1);
-        fillGraph(root,graph);
-        for(int i=0;i<n;i++){
-            cout<<"node "<<i<<" neigh ";
-            for(int neigh : graph[i]){cout<<neigh<<" ";}
-            cout<<endl;
-        }
-        vector<int> ans;
-        vector<int> vis(n+1,0);
-        dfs(target->val,graph,vis,ans,k);
-        return ans;
+        fillGraph(root,graph);       
+        return bfs(target->val,graph,k);
     }
 };
