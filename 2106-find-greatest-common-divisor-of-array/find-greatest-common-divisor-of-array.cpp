@@ -1,4 +1,10 @@
 class Solution {
+    int gcd(int a ,int b){
+        if(a==0){return b;}
+        if(b==0){return a;}
+        if(a>b){return gcd(a-b,b);}
+        return gcd(a,b-a);
+    }
 public:
     int findGCD(vector<int>& nums) {
      int Min=1e9;
@@ -8,12 +14,6 @@ public:
          if(Min>nums[i]){Min=nums[i];}
          if(nums[i]>Max){Max=nums[i];}
      }
-    int a=Min;
-    int b=Max;
-    int div=1;
-    for(int i=Min;i>=2;i--){
-        if( (a % i)==0 && (b % i)==0 ){return i;}
-    }
-    return div;
+     return gcd(Min,Max);
     }
 };
