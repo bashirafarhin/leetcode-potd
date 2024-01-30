@@ -11,8 +11,8 @@ public:
     int a=Min;
     int b=Max;
     int div=1;
-    for(int i=2;i<=Min;i++){
-        if( (a % i)==0 && (b % i)==0 ){div=i;}
+    for(int i=Min;i>=2;i--){
+        if( (a % i)==0 && (b % i)==0 ){return i;}
     }
     return div;
     }
