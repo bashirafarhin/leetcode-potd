@@ -1,13 +1,10 @@
 class Solution {
 public:
     bool checkIfPangram(string sentence) {
-     unordered_set<char> st;
-     for(int i=0; i<sentence.length(); i++){
-         st.insert(sentence[i]);
+     int check=0;
+     for(int i=0;i<sentence.length();i++){
+         check = check | ( 1<< (sentence[i]-'a') );
      }
-     for(int i=0;i<26;i++){
-         if(st.find('a'+i)==st.end()){ return false; }
-     }
-     return true;     
+     return check==((1<<26) - 1) ? true : false ;
     }
 };
