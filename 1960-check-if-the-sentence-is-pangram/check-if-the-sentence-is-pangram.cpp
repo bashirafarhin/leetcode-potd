@@ -1,18 +1,13 @@
 class Solution {
 public:
     bool checkIfPangram(string sentence) {
-     sort(sentence.begin(),sentence.end());
-     int n=sentence.length();
-     int i=0;
-     int alphabet=0;
-     while(i<n){
-        char curr=char ('a' + alphabet );
-        if(sentence[i]==curr){
-           while(i<n && sentence[i]==curr ){ i++; }
-           alphabet++;
-         }
-         else {  return false; }
+     unordered_set<char> st;
+     for(int i=0; i<sentence.length(); i++){
+         st.insert(sentence[i]);
      }
-     return alphabet==26 ? true : false;
+     for(int i=0;i<26;i++){
+         if(st.find('a'+i)==st.end()){ return false; }
+     }
+     return true;     
     }
 };
