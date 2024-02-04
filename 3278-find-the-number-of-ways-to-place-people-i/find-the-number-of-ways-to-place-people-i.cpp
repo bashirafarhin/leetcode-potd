@@ -1,7 +1,7 @@
 class Solution {
 public:
     int numberOfPairs(vector<vector<int>>& points) {
-        sort(points.begin(),points.end());
+        
         int n=points.size();
         int ans=0;
       
