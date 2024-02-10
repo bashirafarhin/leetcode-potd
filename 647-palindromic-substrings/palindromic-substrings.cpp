@@ -7,8 +7,7 @@ public:
           for(int j=i;j<n;j++){
               int start=i;
               int end=j;
-              while(end>start){
-                  if(s[start] !=s[end]){ break; }
+              while(end>start && s[start]==s[end]){
                   start++ ; end--;
               }
               if(start>=end){ count++; }
