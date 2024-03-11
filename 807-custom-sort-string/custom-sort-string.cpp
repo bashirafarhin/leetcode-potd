@@ -1,8 +1,18 @@
 class Solution {
   public:
-    string customSortString(string S, string T) {
-        sort(T.begin(), T.end(),
-             [&](char a, char b) { return S.find(a) < S.find(b); });
-        return T;
+    string customSortString(string order, string s) {
+     unordered_map<char,int> freq;
+
+     for(char c : s){ freq[c]++; }
+
+     string ans="";
+     for(char c : order){
+         while(freq[c] !=0 ){ ans+=c; freq[c]--; }
+     }
+
+     for(char c : s){
+         while(freq[c] !=0 ){ ans+=c; freq[c]--; }
+     }
+     return ans;     
     }
 };
