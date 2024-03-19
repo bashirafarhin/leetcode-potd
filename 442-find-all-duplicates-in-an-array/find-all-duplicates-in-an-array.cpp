@@ -4,13 +4,12 @@ public:
         //brute force methods using sets and map
         int n=nums.size();
         vector<int>ans;
-        vector<bool>visited(n,false);
         for(int i=0;i<n;i++){
-            int ind=nums[i]-1;
-            if(visited[ind]){
-                ans.push_back(nums[i]);
+            int ind=abs(nums[i])-1;
+            if(nums[ind]<0){
+                ans.push_back(abs(nums[i]));
             } else {
-                visited[ind]=true;
+                nums[ind]=-1*nums[ind];
             }
         }
         return ans;
