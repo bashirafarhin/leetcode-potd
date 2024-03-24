@@ -4,20 +4,15 @@ public:
         int n=nums.size();
         vector<long long>ans(n,0);
         unordered_map<int,long long> mp; //id,freq
-        set<pair<long long,int>> freqSet; //freq
+        priority_queue<pair<long long,int>> pq; //freq,id
                 
         for(int i=0;i<n;i++){
-            long long oldFreq=0;
-            int id=nums[i];
-            if(mp.find(id) !=mp.end()){
-                oldFreq=mp[id];
-                freqSet.erase({-1*oldFreq,id});
+            mp[nums[i]]+=freq[i];
+            while( !pq.empty() && mp[pq.top().second] != pq.top().first ){
+                pq.pop();
             }
-            long long newFreq= oldFreq + freq[i];
-            freqSet.insert( {-1*newFreq,id} );
-            mp[id]=newFreq;
-
-            ans[i]= freqSet.begin()==freqSet.end() ? 0 : -1*freqSet.begin()->first;
+            pq.push({ mp[nums[i]],nums[i] });
+            ans[i]= pq.empty() ? 0 : pq.top().first ;
         }
         return ans;
     }
