@@ -8,8 +8,7 @@ public:
         for(int i=0;i<n;i++){
             freq[nums[i]]++;
             if( freq[nums[i]]>k ){
-              int num=nums[i];
-              while(freq[num]>k){
+              while(freq[nums[i]]>k){
                 freq[nums[start]]--;
                 start++;
               }
