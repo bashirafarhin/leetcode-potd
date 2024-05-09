@@ -2,13 +2,13 @@ class Solution {
 public:
     string makeGood(string s) {
       int n=s.length();
-      if(n<=1){ return s; }
-      for(int i=0;i<n-1;i++){
-        if( s[i]==(s[i+1]+32) || s[i]==(s[i+1]-32) ){
-            string ns=s.substr(0,i)+s.substr(i+2);
-            return makeGood(ns);
-        }
+      string ans="";
+      for(int i=0;i<n;i++){
+        
+        if(ans.size()>0 && (ans.back()==(s[i]+32) || ans.back()==(s[i]-32)) ){ ans.pop_back(); }
+
+        else{ ans.push_back(s[i]); }
       }
-      return s;
+      return ans;
     }
 };
