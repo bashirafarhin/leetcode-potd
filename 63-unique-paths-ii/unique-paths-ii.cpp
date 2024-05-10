@@ -1,21 +1,21 @@
 class Solution {
 public:
-    int solve(vector<vector<int>>& grid,int r,int c,vector<vector<int>>& vis,vector<vector<int>>&dp){
-        if(r<0 || c<0 || vis[r][c]==1 || grid[r][c]==1){ return 0; }
-        if(r==0 && c==0){ return 1; }
-        if(dp[r][c] !=-1){ return dp[r][c]; }
-        vis[r][c]=1;
-        int up=solve(grid,r-1,c,vis,dp);
-        int left=solve(grid,r,c-1,vis,dp);
-        vis[r][c]=0;
-        return dp[r][c]=up+left;
 
-    }
-    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
-        int r=obstacleGrid.size();
-        int c=obstacleGrid[0].size();
-        vector<vector<int>>vis(r,vector<int>(c,0));
-        vector<vector<int>>dp(r,vector<int>(c,-1));    
-        return solve(obstacleGrid,r-1,c-1,vis,dp);
+    int uniquePathsWithObstacles(vector<vector<int>>& grid) {
+        int R=grid.size();
+        int C=grid[0].size();
+        vector<vector<int>>dp(R,vector<int>(C,0));
+
+        for(int r=0;r<R;r++){
+            for(int c=0;c<C;c++){
+                if(grid[r][c]==1){ continue; }
+                else if( r==0 && c==0 ){ dp[r][c]=1; }
+                else{
+                   if(r-1>=0){ dp[r][c]+=dp[r-1][c]; }
+                   if(c-1>=0){ dp[r][c]+=dp[r][c-1]; }
+                }
+            }
+        }
+        return dp[R-1][C-1];
     }
 };
