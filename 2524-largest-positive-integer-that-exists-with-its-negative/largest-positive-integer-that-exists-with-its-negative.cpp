@@ -1,22 +1,13 @@
-class Solution 
-{
+class Solution {
 public:
-    int findMaxK(vector<int>& nums) 
-    {
-        sort(nums.begin(), nums.end());
-        int low=0, high=nums.size()-1;
-        
-        while(low < high)
-        {
-            if((nums[low] + nums[high]) == 0)
-            {
-                return  nums[high];
-            }
-            
-            else if((nums[low] + nums[high]) < 0)
-                low++;
-            
-            else high--;
+    int findMaxK(vector<int>& nums) {
+        int start=0;
+        int end=nums.size()-1;
+        sort(nums.begin(),nums.end());
+        while(start<end){
+            if(nums[end]==-1*nums[start]){ return nums[end]; }
+            else if(nums[end]<-1*nums[start]){ start++; }
+            else { end--; }
         }
         return -1;
     }
