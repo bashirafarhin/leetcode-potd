@@ -10,31 +10,27 @@
  * };
  */
 class Solution {
-    void solve(TreeNode* root,vector<int>& path,int& ans){
-        if(root==NULL){return ;}
-        // if(root->left==NULL && root->right==NULL){return root->val;}
-        path.push_back(root->val);
-        solve(root->left,path,ans);
-        solve(root->right,path,ans);
-        
-        int mini=1e9;
-        int maxi=-1e9;
-        for(int num : path){
-            maxi=max(maxi,num);
-            mini=min(mini,num);
-        }
+public:
+    void solve2(TreeNode* root,int data,int& curr){
+        if(root==NULL){ return ; }
+        curr=max(curr,abs(data-root->val));
+        solve2(root->left,data,curr);
+        solve2(root->right,data,curr);
 
-
-        ans=max(ans,maxi-mini);
-        path.pop_back();
-        return;
     }
 
-public:
+    void solve(TreeNode* root,int& ans){
+        if(root==NULL){ return ; }
+        int curr=0;
+        solve2(root,root->val,curr);
+        ans=max(ans,curr);
+        solve(root->left,ans);
+        solve(root->right,ans);
+    }
+
     int maxAncestorDiff(TreeNode* root) {
-        vector<int> path;
         int ans=0;
-        solve(root,path,ans);
+        solve(root,ans);
         return ans;
     }
 };
