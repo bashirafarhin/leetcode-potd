@@ -1,37 +1,33 @@
 class Solution {
 public:
-    vector<int> spiralOrder(vector<vector<int>>& matrix) {
-        vector<int>ans;
-        int row=matrix.size()-1;
-        int col=matrix[0].size()-1;
-        int r=0;
-        int c=0;
-        while( row>=r && col>=c){
+    void solve(vector<vector<int>>& mat,int i,int j,int r,int c,vector<int>&ans){
+        if(i>r || j>c){ return ; }
 
-            for(int i=c;i<=col;i++){
-                ans.push_back(matrix[r][i]);
-            }
-            r++; //move to next row //shrinking the matrix
-            
-            for(int i=r;i<=row;i++){
-                ans.push_back(matrix[i][col]);
-            }
-            col--; //move to prev col //shrinking the matrix
-
-            if( r <=row ){
-              for(int i=col;i>=c;i--){
-                ans.push_back(matrix[row][i]);
-              }
-              row--; //move to prev row //shrinking the matrix
-            }
-
-            if( c <=col){
-              for(int i=row;i>=r;i--){
-                ans.push_back(matrix[i][c]);
-              }
-              c++; //move to next col //shrinking the matrix
-            }
+        for(int k=j;k<=c;k++){
+            ans.push_back(mat[i][k]);
         }
-        return ans;
+        for(int k=i+1;k<=(r-1);k++){
+            ans.push_back(mat[k][c]);
+        }
+
+        if(i !=r){
+           for(int k=c;k>=j;k--){
+            ans.push_back(mat[r][k]);
+           }
+        }
+        if(j !=c){
+           for(int k=r-1;k>=(i+1);k--){
+            ans.push_back(mat[k][j]);
+           }
+        }
+        solve(mat,i+1,j+1,r-1,c-1,ans);
+    }
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+     int r=matrix.size();
+     int c=matrix[0].size();
+     vector<int>ans;
+     solve(matrix,0,0,r-1,c-1,ans);
+     return ans;
+
     }
 };
