@@ -30,7 +30,7 @@ public:
                     vis[node - 1] = true;
                     q.push({node - 1, dist + 1});
                 }
-                if (node + 1 <= x + 15 && vis[node + 1] == false) {
+                if (node + 1 <= x + 11 && vis[node + 1] == false) {
                     vis[node + 1] = true;
                     q.push({node + 1, dist + 1});
                 }
