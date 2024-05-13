@@ -1,19 +1,20 @@
 class Solution {
 public:
-    int isPalindrome(string& s,int start,int end,vector<vector<int>>&dp){
-        if(start>end){ return 1; }
-        if(dp[start][end] !=-1){ return dp[start][end];}
-        return dp[start][end]=(s[start]==s[end]) ? isPalindrome(s,start+1,end-1,dp) : 0 ;
+    int count(string s, int start, int end) {
+        int ans=0;
+        while (start>=0 && end<s.size() && s[start] == s[end]) {
+            ans++;
+            start--;
+            end++;
+        }
+        return ans;
     }
+
     int countSubstrings(string s) {
-      int n=s.length();
-      int count=0;
-      vector<vector<int>>dp(n,vector<int>(n,-1));
-      for(int i=0;i<n;i++){
-       for(int j=i;j<n;j++){
-           if(isPalindrome(s,i,j,dp)){ count++; }
-       }
-      }
-      return count;
+        int ans = 0;
+        for (int i = 0; i < s.size() ; i++) {
+            ans += count(s, i, i) + count(s, i, i + 1);
+        }
+        return ans;
     }
 };
