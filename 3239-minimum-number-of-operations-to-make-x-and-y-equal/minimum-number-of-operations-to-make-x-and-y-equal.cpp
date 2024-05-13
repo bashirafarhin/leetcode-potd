@@ -7,7 +7,6 @@ public:
         queue<pair<int, int>> q;
         unordered_map<int, int> vis;
         q.push({x, 0});
-        int ans = 0;
 
         while (!q.empty()) {
             int size = q.size();
@@ -17,8 +16,7 @@ public:
                 int dist = q.front().second;
                 q.pop();
                 if (node == y) {
-                    ans = dist;
-                    break;
+                    return dist;
                 }
                 if (node % 11 == 0 && vis[node / 11] == false) {
                     vis[node / 11] = true;
@@ -38,6 +36,6 @@ public:
                 }
             }
         }
-        return ans;
+        return -1;
     }
 };
