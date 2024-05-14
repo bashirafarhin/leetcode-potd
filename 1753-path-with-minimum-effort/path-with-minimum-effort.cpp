@@ -1,31 +1,31 @@
 class Solution {
 public:
     int minimumEffortPath(vector<vector<int>>& heights) {
-    int row=heights.size();
-    int col=heights[0].size();
-    vector<vector<int>> dist(row,vector<int>(col,1e9));
-    //if we ever encounter the path again we are discarding if that have a
-    // greater effort and its better than carrying visited array
-    priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>> pq;
-    pq.push({0,{0,0}}); //effort row column
-    vector<vector<int>> path={{-1,0},{0,1},{1,0},{0,-1}};
-    while(!pq.empty()){
-     int currEffort=pq.top().first;
-     int r=pq.top().second.first;
-     int c=pq.top().second.second;
-     pq.pop();
-     if(r==row-1 && c==col-1){return currEffort;}
-     for(auto it : path){
-       int nr=r+it[0];
-       int nc=c+it[1];
-       if(nr>-1 && nr< row && nc>-1 && nc<col){
-           int newEffort=max(currEffort,abs(heights[nr][nc]-heights[r][c]));
-           if(newEffort<dist[nr][nc]){
-               dist[nr][nc]=newEffort;
-               pq.push({newEffort,{nr,nc}});}
-       }
-     }
-    }
-    return 0;
-    }
+        int R=heights.size();
+        int C=heights[0].size();
+        vector<vector<int>>dist(R,vector<int>(C,1e9));
+        dist[0][0]=0;
+        int dx[]={-1,0,1,0};
+        int dy[]={0,1,0,-1};
+        priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>>pq;
+        pq.push({0,{0,0}});
+        while(!pq.empty()){
+            int effort=pq.top().first;
+            int r=pq.top().second.first;
+            int c=pq.top().second.second;
+            pq.pop();
+            for(int i=0;i<4;i++){
+                int newR=r+dx[i];
+                int newC=c+dy[i];
+                if(newR>=0 && newR<R && newC>=0 && newC<C){
+                    int newEffort=max(effort,abs(heights[newR][newC]-heights[r][c]));
+                    if(newEffort<dist[newR][newC]){
+                        dist[newR][newC]=newEffort;
+                        pq.push({newEffort,{newR,newC}});
+                    }
+                }
+            }
+        }
+        return dist[R-1][C-1];
+        }
 };
