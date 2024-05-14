@@ -1,27 +1,35 @@
 class Solution {
-    bool backtrack(vector<int>&arr,vector<int>&check,int i,int target,int k,int OGtarget){
-        if(k==0){return true;}
-        if(target==0){return backtrack(arr,check,0,OGtarget,k-1,OGtarget);}
-        if(i==arr.size()){return false;}
-        bool take=false;
-       if (! (check[i] || arr[i] > target || (i > 0 && arr[i] == arr[i-1] && !check[i-1]) ) ){
-    
-         check[i]=1;
-         take=backtrack(arr,check,i+1,target-arr[i],k,OGtarget);
-         if(take==true){return true;}
-         check[i]=0;
-        } 
-        bool nottake=backtrack(arr,check,i+1,target,k,OGtarget);
-        return nottake;
-        }
 public:
+    bool solve(vector<int>&nums,int i,int currSum,int target,int k,vector<int>&vis){
+        
+        if(k<0){
+            return true;
+        }
+        if(currSum==0){
+            return solve(nums,0,target,target,k-1,vis);
+        }
+        if(i==nums.size()){
+            return false;
+        }
+
+        bool take=false;
+        if( !(nums[i]>target || vis[i] || (i>0 && nums[i]==nums[i-1] && !vis[i-1]) ) ){
+            vis[i]=1;
+            take=solve(nums,i+1,currSum-nums[i],target,k,vis);
+            vis[i]=0;
+            if(take){ return true; }
+        }
+
+        return solve(nums,i+1,currSum,target,k,vis);
+
+        
+    }
     bool canPartitionKSubsets(vector<int>& nums, int k) {
-    int sum=accumulate(nums.begin(),nums.end(),0);
-    if(sum%k !=0 || nums.size()<k){return false;}
-    sort(nums.begin(),nums.end(),greater<int>());
-    vector<int> check(nums.size(),0);
-    int subsetsum=sum/k;
-    return backtrack(nums,check,0,subsetsum,k,subsetsum);
-    }  
-    
+       int sum=accumulate(nums.begin(),nums.end(),0);
+       if(sum%k !=0){ return false; }
+       int target=sum/k;
+       vector<int>vis(nums.size(),0);
+       sort(nums.begin(),nums.end(),greater<int>());
+       return solve(nums,0,0,target,k,vis);
+    }
 };
