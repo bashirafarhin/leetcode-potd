@@ -1,18 +1,25 @@
 class Solution {
-  public:
+public:
     string customSortString(string order, string s) {
-     unordered_map<char,int> freq;
+        int freq[26]={0};
+        for(char c : s){ freq[c-'a']++; }
 
-     for(char c : s){ freq[c]++; }
+        int i=0;
+        for(char c : order){
+            while(freq[c-'a']){
+                s[i]=c;
+                freq[c-'a']--;
+                i++;
+            }
+        }
 
-     string ans="";
-     for(char c : order){
-         while(freq[c] !=0 ){ ans+=c; freq[c]--; }
-     }
-
-     for(char c : s){
-         while(freq[c] !=0 ){ ans+=c; freq[c]--; }
-     }
-     return ans;     
+        for(int j=0;j<26;j++){
+            while(freq[j]){
+                s[i]=char('a'+j);
+                freq[j]--;
+                i++;
+            }
+        }
+        return s;
     }
 };
