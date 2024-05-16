@@ -1,39 +1,30 @@
 class Solution {
-    void bfs(int R,int C,vector<vector<int>> &visited,vector<vector<char>>& grid){
-     int n=grid.size();
-     int m=grid[0].size();
-     queue<pair<int,int>> q;
-     q.push({R,C});
-     while(!q.empty()){
-      int r=q.front().first;
-      int c=q.front().second;
-      q.pop();
-      int dx[]={-1,0,1,0};
-      int dy[]={0,1,0,-1};
-      for(int i=0;i<4;i++){
-          int new_row=r+dx[i];
-          int new_col=c+dy[i];
-       if(new_row>=0 && new_row<n && new_col>=0 && new_col<m && !visited[new_row][new_col] && grid[new_row][new_col]=='1'){
-         q.push({new_row,new_col});
-         visited[new_row][new_col]=1;
-       }
-      }
-    }
-    }
 public:
+//observation
+// 1 agar hoga to island exist hi krega
+    void markIslandGrp(vector<vector<char>>&grid,int r,int c,vector<vector<int>>&vis){
+        if(r<0 || r==grid.size() || c<0 || c==grid[0].size() || grid[r][c]=='0' ||  vis[r][c]){ return; }
+        vis[r][c]=1;
+        markIslandGrp(grid,r-1,c,vis);
+        markIslandGrp(grid,r,c+1,vis);
+        markIslandGrp(grid,r+1,c,vis);
+        markIslandGrp(grid,r,c-1,vis);
+        return; 
+    }
+
     int numIslands(vector<vector<char>>& grid) {
-     int n=grid.size();
-     int m=grid[0].size();
-     int ans=0;
-     vector<vector<int>> visited(n,vector<int>(m,0));
-     for(int i=0;i<n;i++){
-         for(int j=0;j<m;j++){
-             if(!visited[i][j] &&  grid[i][j]=='1'){
-                 ans++;
-                 bfs(i,j,visited,grid);
-             }
-         }
-     }
-     return ans;   
+        int count=0;
+        int R=grid.size();
+        int C=grid[0].size();
+        vector<vector<int>>vis(R,vector<int>(C,0));
+        for(int i=0;i<R;i++){
+            for(int j=0;j<C;j++){
+                if(!vis[i][j] && grid[i][j]=='1'){
+                    count++;
+                    markIslandGrp(grid,i,j,vis);
+                }
+            }
+        }
+        return count;
     }
 };
