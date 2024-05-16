@@ -1,19 +1,17 @@
 class Solution {
 public:
     int minSteps(string s, string t) {
-     unordered_map<char,int> freq;
-     for(int i=0;i<s.length();i++){
-         freq[s[i]]++;
-     }
-     for(int i=0;i<t.length();i++){
-         freq[t[i]]--;
-     }     
-     int ans=0;
-     for(auto it : freq){
-       if(it.second>0){
-           ans+=it.second;
-       }
-     }
-     return ans;
+        int n=s.length();
+        int operations=0;
+        int changes=0;
+        vector<int>freqs(26,0),freqt(26,0);
+        for(int i=0;i<n;i++){
+            freqs[s[i]-'a']++;
+            freqt[t[i]-'a']++;
+        }
+        for(int i=0;i<26;i++){
+            if(freqt[i]>freqs[i]){ operations+=( freqt[i]-freqs[i] ); } 
+        }
+        return operations;
     }
 };
