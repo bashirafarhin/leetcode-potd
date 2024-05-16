@@ -1,11 +1,9 @@
 class Solution {
 public:
     int solve(vector<int>& nums, int i, int target,vector<vector<int>>&dp) {
-
         if (i == nums.size()) {
             return target==0;
         }
-
         if(dp[i][target] !=-1){ return dp[i][target];}
         int take=0;
         if(nums[i]<=target){
@@ -15,7 +13,7 @@ public:
         return dp[i][target]=take+nottake;
     }
 
-
+//watch DP 18 of striver
     int findTargetSumWays(vector<int>& nums, int target) {
       int n=nums.size();
       int sum=accumulate(nums.begin(),nums.end(),0);
