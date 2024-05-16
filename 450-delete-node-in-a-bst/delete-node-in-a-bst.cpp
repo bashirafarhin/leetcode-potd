@@ -1,26 +1,29 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
+    TreeNode* solve(TreeNode* root,int key,int c){
+        if(root==NULL){ return root; }
+        if(root->val==key){
+
+           TreeNode* r=root->right;
+           TreeNode* l=root->left;
+           delete root;
+
+           if(!l){ return r; }
+           if(!r){ return l; }
+
+           TreeNode* rst=r->left;
+           TreeNode* curr=l;
+           while(curr->right !=NULL){ curr=curr->right; }
+           curr->right=rst;
+           r->left=l;
+           return r;
+        }
+        root->left=solve(root->left,key,c);
+        root->right=solve(root->right,key,c);
+        return root;
+
+    }
     TreeNode* deleteNode(TreeNode* root, int key) {
-         if(root==NULL){return root;}
-         if(root->val==key){
-          if(root->left==NULL){return root->right;}
-           TreeNode *curr=root->left;
-           while(curr->right !=NULL){curr=curr->right;}
-           curr->right=root->right;
-           return root->left;}
-         else if(root->val<key){
-          root->right=deleteNode(root->right,key);}
-         else{root->left=deleteNode(root->left,key);}
-         return root;}
+        return solve(root,key,0);
+    }
 };
