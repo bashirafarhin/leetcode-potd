@@ -1,46 +1,38 @@
 class Solution {
 public:
+    vector<int> solve(vector<vector<int>>& land,int r,int c,vector<vector<int>>& vis){
+     int R=land.size();
+     int C=land[0].size();
+
+     int i=r;
+     int j=c;
+     for(i=r;i<R;i++){
+        if(land[i][c]==0){ break; } 
+        for(j=c;j<C;j++){
+            if(land[i][j]==0){ break; }
+            vis[i][j]=1;
+        }
+              
+     }
+
+     vector<int>ans={r,c,i-1,j-1};
+     return ans;
+    }
+
     vector<vector<int>> findFarmland(vector<vector<int>>& land) {
-        int m = land.size();
-        int n = land[0].size();
-        
-        vector<vector<int>> result;
-        for(int i = 0; i<m; i++) {
-            for(int j = 0; j<n; j++) {
-                
-                //We have to deal with 1s only
-                if(land[i][j] == 0) continue;
+       int R=land.size();
+       int C=land[0].size();
+       vector<vector<int>>vis(R,vector<int>(C,0));
+       vector<vector<int>>ans;
 
-                //Find right most column of rectangle (see the image below)
-                int c1 = j;
-                while(c1 < n && land[i][c1] == 1) {
-                    c1++;
-                }
-
-                //Find bottom most row of rectangle (see the image below)
-                int r2 = i;
-                while(r2 < m && land[r2][j] == 1) {
-                    r2++;
-                }
-                
-                //Then you can find bottom right most of rectangle
-                c1 = c1==0 ? c1 : c1-1;
-                r2 = r2==0 ? r2 : r2-1;
-
-                //Use them as your answer
-                //{r1, c1} = {i, j}
-                //{r2, c2} = {r2, c1}
-                result.push_back({i, j, r2, c1});
-                
-                //Now, mark the covered land with 0 so that you don't consider them later
-                for(int k = i; k<=r2; k++) {
-                    for(int l = j; l<=c1; l++) {
-                        land[k][l] = 0;
-                    }
-                }
-                
+       for(int i=0;i<R;i++){
+        for(int j=0;j<C;j++){
+            if(land[i][j] && !vis[i][j]){
+                //gotta go since find farmland
+                ans.push_back(solve(land,i,j,vis));
             }
         }
-        return result;
+       }
+       return ans;
     }
 };
