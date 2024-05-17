@@ -1,5 +1,6 @@
 class Solution {
 public:
+// Time --->O(2*mn)--->O(mn)
     vector<int> solve(vector<vector<int>>& land,int r,int c,vector<vector<int>>& vis){
      int R=land.size();
      int C=land[0].size();
