@@ -1,16 +1,27 @@
 class Solution {
 public:
-        bool checkValidString(string s) {
-        int cmin = 0, cmax = 0;
-        for (char c : s) {
-            if (c == '(')
-                cmax++, cmin++;
-            if (c == ')')
-                cmax--, cmin = max(cmin - 1, 0);
-            if (c == '*')
-                cmax++, cmin = max(cmin - 1, 0);
-            if (cmax < 0) return false;
+    // string is invalid if at any point close > open
+
+    bool checkValidString(string s) {
+        int n=s.length();
+        stack<pair<char,int>>st,sta; //stack of brackets and asterisks
+ 
+        for(int i=0;i<n;i++){
+            if(s[i]=='('){ st.push({s[i],i}); }
+            else if(s[i]=='*'){ sta.push({s[i],i}); }
+            else{
+                if(!st.empty() && st.top().first=='('){st.pop(); }
+                else if(!sta.empty()){ sta.pop(); }
+                else{ return false; }
+            }
         }
-        return cmin == 0;
+
+        while ( !st.empty() && !sta.empty() ){
+            if(sta.top().second<st.top().second){ return false; }
+            st.pop();
+            sta.pop();
+        }
+        
+        return st.empty() ;
     }
 };
