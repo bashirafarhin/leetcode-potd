@@ -1,19 +1,21 @@
 class Solution {
 public:
     int islandPerimeter(vector<vector<int>>& grid) {
-        int count=0, repeat=0;
-        for(int i=0;i<grid.size();i++)
-        {
-            for(int j=0; j<grid[i].size();j++)
-                {
-                    if(grid[i][j]==1)
-                    {
-                        count ++;
-                        if(i!=0 && grid[i-1][j] == 1) repeat++;
-                        if(j!=0 && grid[i][j-1] == 1) repeat++;
-                    }
+        int r=grid.size();
+        int c=grid[0].size();
+        int squares=0;
+        int connectedSides=0;
+
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                if(grid[i][j]==1){
+                    squares++;
+                    if(j+1<c && grid[i][j+1]){ connectedSides++; }
+                    if(i+1<r && grid[i+1][j]){ connectedSides++; }
+                    
                 }
+            }
         }
-        return 4*count-repeat*2;
+        return 4*squares-2*connectedSides;
     }
 };
