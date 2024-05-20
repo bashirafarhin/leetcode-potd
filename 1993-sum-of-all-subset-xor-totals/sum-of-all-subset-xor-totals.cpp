@@ -1,19 +1,15 @@
 class Solution {
 public:
     int subsetXORSum(vector<int>& nums) {
-        int n=nums.size();
-        int l=1<<n;
         int ans=0;
-        for(int i=1;i<l;i++){
+        int n=nums.size();
+        int len=1<<n;
+        for(int i=0;i<len;i++){
             int num=i;
             int curr=0;
-            int m=n-1;
-            while(num>0){
-                if(num & 1){
-                 curr=curr^nums[m];
-                }
-                num=num>>1;
-                m--;
+            for(int j=n-1;j>=0;j--){
+                if(num & 1) curr=curr ^ nums[j];
+                num>>=1;
             }
             ans+=curr;
         }
