@@ -10,7 +10,7 @@ public:
         for(char ch : words[i]){ temp[ch-'a']++; }
         for(int i=0;i<26;i++){
             if(!freq[i] || !temp[i]){ freq[i]=0; }
-            else{ freq[i]=temp[i]<freq[i] ? temp[i] : freq[i]; }
+            else if(freq[i]>temp[i]){ freq[i]=temp[i]; }
         }
        }
 
