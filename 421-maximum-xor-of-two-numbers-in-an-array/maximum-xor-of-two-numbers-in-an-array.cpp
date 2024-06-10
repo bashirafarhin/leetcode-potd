@@ -1,49 +1,55 @@
-class Trienode{
- public:
- Trienode* children[2];
- Trienode(){
-    this->children[0]=NULL;
-    this->children[1]=NULL;
- }
+class trieNode{
+    public:
+    trieNode* children[2];
+    trieNode(){
+        this->children[0]=NULL;
+        this->children[1]=NULL;
+    }
 };
+
 class Trie{
     public:
-    Trienode* root;
+    trieNode* root;
     Trie(){
-    this->root=new Trienode();}
-    void insert(int num){
-        Trienode* curr=root;
-        for(int i=31;i>=0;i--){
-            int bit=(num >> i) & 1;
-            if(curr->children[bit]==NULL){
-                curr->children[bit]=new Trienode();
-            }
-            curr=curr->children[bit];
-        }}
-    int getmax(int num){
-        Trienode* curr=root;
-        int ans=0;
-        for(int i=31;i>=0;i--){
-            int bit=(num >> i) & 1;
-            if(curr->children[1-bit] !=NULL){
-             curr=curr->children[1-bit];
-             ans = ans | (1<<i);
-            } else {
-             curr=curr->children[bit];}
-            
-        }
-        return ans;}
+        this->root=new trieNode();
+    }
+
+    void insertHelper(trieNode* curr,int n,int i){
+        if(i==-1){ return; }
+        int bit= (n>>i) & 1;
+        if(curr->children[bit]==NULL){ curr->children[bit]=new trieNode(); }
+        insertHelper(curr->children[bit],n,i-1);
+    }
+
+    void insert(int n){
+        insertHelper(root,n,31);
+    }
+
+    int getMaxHelper(trieNode* curr,int n,int i){
+        if(i==-1){ return 0; }
+        int bit=(n>>i) & 1;
+        if(curr->children[1-bit]==NULL){
+            return getMaxHelper(curr->children[bit],n,i-1);; }
+        return (1<<i) + getMaxHelper(curr->children[1-bit],n,i-1);  
+    }
+
+    int getMax(int n){
+        return getMaxHelper(root,n,31);
+    }
+
+
 };
 
 class Solution {
-
 public:
     int findMaximumXOR(vector<int>& nums) {
-        Trie trie;
         int n=nums.size();
-        for(int i=0;i<n;i++){trie.insert(nums[i]);}
+        Trie t;
+        for(int i=0;i<n;i++){ t.insert(nums[i]); }
         int ans=0;
-        for(int i=0;i<n;i++){ans=max(ans,trie.getmax(nums[i]));}
+        for(int i=0;i<n;i++){
+            ans=max(ans,t.getMax(nums[i]));
+        }
         return ans;
     }
 };
