@@ -1,33 +1,29 @@
 class Solution {
 public:
     vector<int> relativeSortArray(vector<int>& arr1, vector<int>& arr2) {
-        int i=0,k=0;
-        int n=arr1.size();
-        int m=arr2.size();
-        while(i<n && k<m){
-            int j=i;
-            while(j<n){
-                if (arr1[j]==arr2[k]){
-                    swap(arr1[i],arr1[j]);
-                    i++;
-                }
-                j++;
-            }
-            k++;
-        }
-      
-       cout<<i<<endl;
+      map<int,int>mp;
+      int n=arr1.size();
+      for(int i=0;i<n;i++){ mp[arr1[i]]++; }
 
-        for(int j=i;j<n;j++){
-            int mini=j;
-            for(int k=j;k<n;k++){
-                if(arr1[k]<arr1[mini]){
-                    mini=k;
-                }
-            }
-            swap(arr1[j],arr1[mini]);
+      int m=arr2.size();
+      int j=0;
+      for(int i=0;i<m;i++){
+        int freq=mp[arr2[i]];
+        while(freq--){
+            arr1[j]=arr2[i];
+            j++;
+            mp[arr2[i]]--;
         }
-        return arr1;
+      }
 
+
+      for(auto it : mp){
+        int freq=it.second;
+        while(freq--){
+            arr1[j]=it.first;
+            j++;
+        }
+      }
+      return arr1;
     }
 };
