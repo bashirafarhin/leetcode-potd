@@ -1,23 +1,14 @@
 class Solution {
 public:
     int singleNumber(vector<int>& nums) {
-        vector<int>arr(32,0);
-
-        for(int i=0;i<nums.size();i++){
-            int n=nums[i];
-            for(int j=31;j>=0;j--){
-                arr[j]+=(n&1);
-                n>>=1;
-            }
-        }
-
-        for(int i=0;i<32;i++){cout<<arr[i];}
-        cout<<endl;
-
+        int n=nums.size();
         int ans=0;
-        for(int i=31;i>=0;i--){
-
-            if(arr[i]%3 !=0) {ans|=(1<<(31-i));}
+        for(int i=0;i<32;i++){
+            int count=0;
+            for(int j=0;j<n;j++){
+                if(nums[j] & (1<<i)){ count++; }
+            }
+            if(count % 3){ ans=ans | (1<<i);  }
         }
         return ans;
     }
