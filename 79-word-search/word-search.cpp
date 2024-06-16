@@ -1,38 +1,33 @@
 class Solution {
 public:
-    bool isvalid(int r,int c,int R,int C){
-     if(c<0 || c==C || r<0 || r==R){return false;}
-        return true;
-    }
-    
-    bool dfs(vector<vector<char>> &grid, string word,int R,int C,int row,int col,int l){
-     if(l==word.length()){return true;}
-     if(!isvalid(row,col,R,C) || word[l] !=grid[row][col])
-      {return false;}
-     
-     int dx[]= { -1,  0, 0, 1 };
-     int dy[]= {  0, -1, 1, 0 };
-     for(int i=0;i<4;i++){
-         char x=grid[row][col];
-         grid[row][col]='%';
-         if(dfs(grid,word,R,C,row+dx[i],col+dy[i],l+1)){
-          grid[row][col]=x;  
-          return true;
-         }
-          grid[row][col]=x;  
-     }
-     return false;}
+    bool solve(vector<vector<char>>& board,int r,int c,int i, string word){
+        if(i==word.size()){ return true; }
+        if(r<0 || r==board.size() || c<00 || c==board[0].size() || board[r][c]=='.' || board[r][c] !=word[i]){ return false; }
+        vector<pair<int,int>> direction={{-1,0}, {0,1}, {1,0}, {0,-1}};
 
+        char original=board[r][c];
+        board[r][c]='.';
+        bool ans=false;
+        for(auto it : direction){
+            int newr=r+it.first;
+            int newc=c+it.second;
+            if(solve(board,newr,newc,i+1,word)){
+                ans=true;
+                break;
+            }
+        }
+
+        board[r][c]=original;
+        return ans;
+    }
     bool exist(vector<vector<char>>& board, string word) {
-     int row=board.size();
-	 int col=board[0].size();
-	 for(int i=0;i<row;i++){
-	     for(int j=0;j<col;j++){
-	         if(dfs(board,word,row,col,i,j,0)){
-	           return true;}
-	     }
-	 }
-	 return false;
-	
+       int n=board.size();
+       int m=board[0].size();
+       for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            if(solve(board,i,j,0,word)){ return true; } 
+        }
+       }
+       return false;
     }
 };
