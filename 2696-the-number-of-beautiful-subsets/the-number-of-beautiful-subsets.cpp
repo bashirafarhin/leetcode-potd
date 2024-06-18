@@ -1,22 +1,23 @@
 class Solution {
-private:
-    int _beautifulSubsets(vector<int>& nums, int k, unordered_map<int, int>& freq, int i) {
-        if (i == nums.size()) { // base case
+public:
+    int solve(vector<int>& nums, int i,int k,unordered_map<int,int>&mp){
+        if(i==nums.size()){
+            if(mp.size()==0){ return 0; }
             return 1;
         }
-        int result = _beautifulSubsets(nums, k, freq, i + 1); // nums[i] not taken
-        if (!freq[nums[i] - k]) { // check if we can take nums[i]
-            freq[nums[i]]++;
-            result += _beautifulSubsets(nums, k, freq, i + 1); // nums[i] taken
-            freq[nums[i]]--;
+        int ans=solve(nums,i+1,k,mp);
+
+        if(!mp[nums[i]-k]){
+            mp[nums[i]]++;
+            ans+=solve(nums,i+1,k,mp);
+            mp[nums[i]]--;
         }
-        return result;
+        return ans;
     }
-    
-public:
+
     int beautifulSubsets(vector<int>& nums, int k) {
-        unordered_map<int, int> freq;
-        sort(nums.begin(), nums.end());
-        return _beautifulSubsets(nums, k, freq, 0) - 1; // -1 for empty subset
+        sort(nums.begin(),nums.end());
+        unordered_map<int,int>mp;
+        return solve(nums,0,k,mp);
     }
 };
