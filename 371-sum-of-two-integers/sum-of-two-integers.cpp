@@ -1,11 +1,19 @@
 class Solution {
 public:
     int getSum(int a, int b) {
-        //negative numbers adjust themselves so work only using positve numbers examples
-        int ans=0;
+        /*
+         a | b | sum | carry
+        ----------------------
+         1 | 0 | 1  | 0
+         0 | 1 | 1  | 0
+         1 | 1 | 0  | 1
+         0 | 0 | 0  | 0
+        -----------------------
+        the sum operation is only given by xor and we need to take care of carry ourselves
+        */
         while(b){
-            int carry=(a & b)<<1;
-            a=a^b;
+            int carry=(a & b) << 1;
+            a=a ^ b;
             b=carry;
         }
         return a;
