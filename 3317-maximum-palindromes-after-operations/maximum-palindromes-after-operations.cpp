@@ -1,43 +1,46 @@
 class Solution {
 public:
     int maxPalindromesAfterOperations(vector<string>& words) {
-    //observation
-    //we can swap any chracter from anywhere to anywhere that is from same word or different word
-    vector<int>wordSize;
-    vector<int>freq(26,0);
-    for(string word : words){
-        for(char c: word){
-           freq[c-'a']++; 
+        int even = 0;
+        vector<int> freq(26, 0);
+        vector<int> lengths;
+        for (string word : words) {
+            lengths.push_back(word.size());
+            for (char ch : word) {
+                freq[ch - 'a']++;
+                if (freq[ch - 'a'] == 2) {
+                    even += 2;
+                    freq[ch - 'a'] = 0;
+                }
+            }
         }
-        wordSize.push_back(word.size());
-    }
-    sort(wordSize.begin(),wordSize.end());
 
-    int even=0;
-    int odd=0;
-    for(int i=0;i<26;i++){
-       even+=freq[i]/2;
-       odd+=freq[i]%2;
-    }
+        for(int n : freq){ cout<<n<<" "; }
+        cout<<endl;
 
-    int n=words.size();
-    int ans=0;
 
-    for(int i=0;i<n;i++){
-        if(wordSize[i]%2){
-          if(odd){ odd--; }
-          else{
-            even--;
-            odd++;
-          }
+        int odd = accumulate(freq.begin(), freq.end(), 0);
+        sort(lengths.begin(), lengths.end());
+        int ans = 0;
+        for (int len : lengths) {
+
+            if(len & 1){
+             int numOfEvenCharRequired = len - 1;
+             if (even < len - 1) { return ans; }
+             even -= numOfEvenCharRequired;
+             len -= numOfEvenCharRequired;
+             if (len == 1) {
+                if (odd != 0){
+                 odd -= 1;}
+                else { even--; }
+                 len--;}
+            } else {
+                if(even<len){ return ans; }
+                even-=len;
+                len=0;
+            }
+            ans++;
         }
-        if(even<wordSize[i]/2) break;
-        even-=wordSize[i]/2;
-        ans++;
-    }
-    return ans;
-
-
-    return true;
+        return ans;
     }
 };
