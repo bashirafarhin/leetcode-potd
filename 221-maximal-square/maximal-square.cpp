@@ -1,18 +1,17 @@
 class Solution {
 public:
     int maximalSquare(vector<vector<char>>& matrix) {
+        int length=0;
         int row=matrix.size();
         int col=matrix[0].size();
-        int length=0;
-        vector<vector<int>> dp(row,vector<int>(col,0));
-        for(int i=0;i<row;i++){
-            for(int j=0;j<col;j++){
-                if( (i==0 || j==0 ) && (matrix[i][j]=='1') ){
-                    dp[i][j]=1;}
-                else if(matrix[i][j]=='1'){
-                    dp[i][j]=1+min( { dp[i-1][j] , dp[i-1][j-1] ,dp[i][j-1] } );
+        vector<vector<int>>dp(row,vector<int>(col,0));
+        for(int r=row-1;r>=0;r--){
+            for(int c=col-1;c>=0;c--){
+                if( (r==row-1 || c==col-1) && matrix[r][c]=='1'){ dp[r][c]=1; }
+                else if(matrix[r][c]=='1') {
+                    dp[r][c]=1+min({ dp[r][c+1],dp[r+1][c+1],dp[r+1][c] });
                 }
-                length=max(length,dp[i][j]);
+                if(dp[r][c]>length){ length=dp[r][c]; }
             }
         }
         return length*length;
