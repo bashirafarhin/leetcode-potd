@@ -1,24 +1,17 @@
 class Solution {
 public:
     int longestPalindrome(string s) {
-      int n=s.length();
-      vector<int>freq(256,0);
-      for(int i=0;i<n;i++){
-        freq[s[i]]++;
-      }
-      int ans=0;
-      int odd=0;
-      for(int i=0;i<256;i++){
-        if(freq[i]>0){    
-            if(freq[i] & 1){
-                ans+=(freq[i]-1);
-                odd=1;
-            }
-            else{
-                ans+=freq[i];
-            }
+        int n=s.length();
+        unordered_map<char,int>mp;
+        for(char c : s){ mp[c]++; }
+        int even=0;
+        int odd=0;
+        int pairs=0;
+        for(auto it : mp){
+           pairs+=(it.second/2);
+           if(it.second & 1){ odd=1; }
         }
-      }
-      return ans+odd;
+
+        return odd ? pairs*2+1 : pairs*2 ;
     }
 };
