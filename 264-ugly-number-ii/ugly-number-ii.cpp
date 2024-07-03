@@ -1,23 +1,21 @@
 class Solution {
 public:
     int nthUglyNumber(int n) {
-        //observation--->uglyNumber * any of(2,3,5)=uglyNumber
-        vector<int>dp(n+1,0);
-        int p2=1,p3=1,p5=1;
-        dp[1]=1;
- 
-        for(int i=2;i<=n;i++){
-            int twoMultiple=dp[p2]*2;
-            int threeMultiple=dp[p3]*3;
-            int fiveMultiple=dp[p5]*5;
+        int p2=0;
+        int p3=0;
+        int p5=0;
+        vector<int>dp(n,0);
+        dp[0]=1;
+        for(int i=1;i<n;i++){
+            int twoMultiple=2*dp[p2];
+            int threeMultiple=3*dp[p3];
+            int fiveMultiple=5*dp[p5];
+            dp[i]=min({ twoMultiple,threeMultiple,fiveMultiple });
 
-            dp[i]=min( {twoMultiple,threeMultiple,fiveMultiple} );
-           
-            if(dp[i]==twoMultiple){ p2++; }
-            if(dp[i]==threeMultiple){ p3++; }
-            if(dp[i]==fiveMultiple){ p5++; }
+            if(twoMultiple==dp[i]){ p2++; }
+            if(threeMultiple==dp[i]){ p3++; }
+            if(fiveMultiple==dp[i]){ p5++; }
         }
-
-        return dp[n];
+        return dp[n-1];
     }
 };
