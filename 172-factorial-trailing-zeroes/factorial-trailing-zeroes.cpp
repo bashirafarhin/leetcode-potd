@@ -1,16 +1,13 @@
-//factorial me trailing zeroes only beacuse of 2 5 10
-//that is only because of 2*5 that is find pair of (2,5)
-//for every  2 , 5 should exist and for every 5, 2 should exist
-//for every 5, 2 should exist--->this condition always remain true
-//that is we need to find only number of 5
-
 class Solution {
 public:
     int trailingZeroes(int n) {
         int ans=0;
-        while(n){
-            n/=5;
-            ans+=n;
+        for(int i=5;i<=n;i+=5){
+            int num=i;
+            while(num % 5 ==0){
+                ans++;
+                num=num/5;
+            }
         }
         return ans;
     }
