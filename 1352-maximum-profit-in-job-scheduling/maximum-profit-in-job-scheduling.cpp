@@ -1,26 +1,40 @@
 class Solution {
-    int solve(int i,vector<vector<int>>& jobs,vector<int>& startTime,vector<int> &dp){
-        if(i==jobs.size()){return 0;}
-        if(dp[i] !=-1){return dp[i];}
-        int index=lower_bound(startTime.begin(),startTime.end(),jobs[i][1])-startTime.begin();
-        int take=jobs[i][2]+solve(index,jobs,startTime,dp);
-        
-        int nottake=solve(i+1,jobs,startTime,dp);
-        return dp[i]=max(take,nottake);
-
-    }
 public:
+    int helper(int i, vector<pair<int,pair<int,int>>>&arr,vector<int>&dp){
+        if(i==arr.size()){
+            return 0;
+        }
+        if(dp[i] !=-1){
+            return dp[i];
+        }
+        int take=0;
+        int res=arr.size();
+        int l=i+1;
+        int h=arr.size()-1;
+        int currEnd=arr[i].second.first;
+        while(l<=h){
+            int mid=(l+h)/2;
+            if(arr[mid].first>=currEnd){
+                res=mid;
+                h=mid-1;
+            } else {
+                l=mid+1;
+            }
+        }
+        
+        take=arr[i].second.second + helper(res,arr,dp);
+        int notTake=helper(i+1,arr,dp);
+        return dp[i]=max(take,notTake);
+    }
+
     int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
-     vector<vector<int>> jobs;
-     int n=startTime.size();
-     for(int i=0;i<n;i++){
-         jobs.push_back({startTime[i],endTime[i],profit[i]});
-     }
-     sort(jobs.begin(),jobs.end());
-     for(int i=0;i<n;i++){
-      startTime[i]=jobs[i][0];
-     }
-     vector<int>dp(n,-1);
-     return solve(0,jobs,startTime,dp);
+        vector<pair<int,pair<int,int>>>arr;
+        int n=endTime.size();
+        for(int i=0;i<n;i++){
+            arr.push_back({startTime[i],{endTime[i],profit[i]}});
+        }
+        sort(arr.begin(),arr.end());
+        vector<int>dp(n,-1);
+        return helper(0,arr,dp);
     }
 };
