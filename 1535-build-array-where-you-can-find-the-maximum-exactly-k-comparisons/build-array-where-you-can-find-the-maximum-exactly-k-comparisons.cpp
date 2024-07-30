@@ -1,25 +1,25 @@
 class Solution {
 public:
-     int dp[51][101][51], pre[51][101][51], mod = 1e9 + 7;
-    int numOfArrays(int n, int m, int k) {
-        for (int j = 0; j<= m; j++) {
-            dp[1][j][1] = 1;
-            pre[1][j][1] = j;
+    int mod=1e9+7;
+    int helper(int i, int searchCost, int max, int n, int m, int k,vector<vector<vector<int>>>&dp){
+        if(i==n){
+            return  searchCost==k;
         }
-        
-        for (int len = 2; len <= n; len++) {
-            for (int mx = 1; mx <= m; mx++) {
-                for (int cost = 1; cost <=k; cost++) {
-                    /* In this first case, we can append any element from [1, mx] to the end of the array. */
-                    dp[len][mx][cost] = (1LL * mx * dp[len-1][mx][cost]) % mod;
-                    
-                    /* In this second case, we can append the element "mx" to the end of the array. 
-                    for (int i = 1; i < mx; i++) dp[len][mx][cost] += ways[len - 1][i][cost - 1];*/
-                    dp[len][mx][cost] = (dp[len][mx][cost] + pre[len-1][mx-1][cost-1]) % mod;\
-                    
-                    pre[len][mx][cost] = (pre[len][mx-1][cost] + dp[len][mx][cost]) % mod;
-                }
+        if(dp[i][searchCost][max] !=-1){
+            return dp[i][searchCost][max];
+        }
+        int res=0;
+        for(int j=1;j<=m;j++){
+            if(j>max){
+                res=(res+helper(i+1,searchCost+1,j,n,m,k,dp))%mod;
+            } else {
+                res=(res+helper(i+1,searchCost,max,n,m,k,dp))%mod;
             }
         }
-        return pre[n][m][k];}
+        return dp[i][searchCost][max]=res%mod;
+    }
+    int numOfArrays(int n, int m, int k) {
+        vector<vector<vector<int>>>dp(n+1,vector<vector<int>>(n+1,vector<int>(m+1,-1)));
+        return helper(0,0,0,n,m,k,dp);
+    }
 };
