@@ -1,16 +1,28 @@
 class Solution {
-    const int MOD = 1e9 + 7;
-    int dp[505][505];
 public:
-    int numWays(int steps, int arrLen) {
-        dp[0][0] = 1;
-        for (int s = 0; s < steps; ++s) {
-            for (int i = 0; i < arrLen && dp[s][i]; ++i) {
-                if (i) (dp[s+1][i-1] += dp[s][i]) %= MOD;
-                (dp[s+1][i] += dp[s][i]) %= MOD;
-                (dp[s+1][i+1] += dp[s][i]) %= MOD;
+// recursion-TC O(3^n)
+// dp-TC O(min(arrLen,steps)*steps)
+    int m = 1e9 + 7;
+    int helper(int i, int steps, int arrLen, vector<vector<int>>& dp) {
+        if (steps == 0) {
+            if (i == 0) {
+                return 1;
             }
+            return 0;
         }
-        return dp[steps][0];
+        if (i < 0 || i == arrLen) {
+            return 0;
+        }
+        if (dp[steps][i] != -1) {
+            return dp[steps][i];
+        }
+        return dp[steps][i] = ((helper(i - 1, steps - 1, arrLen, dp)%m +
+                               helper(i, steps - 1, arrLen, dp)%m)%m +
+                               helper(i + 1, steps - 1, arrLen, dp)%m)%m ;
+    }
+    int numWays(int steps, int arrLen) {
+        arrLen=min(arrLen,steps);
+        vector<vector<int>> dp(steps + 1, vector<int>(arrLen + 1, -1));
+        return helper(0, steps, arrLen, dp);
     }
 };
