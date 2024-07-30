@@ -21,7 +21,7 @@ public:
                                helper(i + 1, steps - 1, arrLen, dp)%m)%m ;
     }
     int numWays(int steps, int arrLen) {
-        arrLen=min(arrLen,steps);
+        arrLen=min(arrLen,(steps/2)+1);
         vector<vector<int>> dp(steps + 1, vector<int>(arrLen + 1, -1));
         return helper(0, steps, arrLen, dp);
     }
