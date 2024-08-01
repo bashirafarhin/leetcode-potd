@@ -1,46 +1,52 @@
 class Solution {
 public:
-    int helper(int i,vector<string>& words, vector<int>& freq, vector<int>& score){
-        if(i==words.size()){
+    int helper(int i, vector<vector<int>>& wordsFreqArr, vector<int>& freq,
+               vector<int>& score) {
+        if (i == wordsFreqArr.size()) {
             return 0;
         }
 
-        int take=0;
-        bool cantake=true;
+        int take = 0;
+        bool canTakeWord = true;
 
-        //check if word can be taken or not
-        for(char ch : words[i]){
-            if(freq[ch-'a']==0){
-                cantake=false;
-            } else {
-                take+=score[ch-'a'];
+        for (int j = 0; j < 26; j++) {
+            if (freq[j] < wordsFreqArr[i][j]) {
+                canTakeWord = false;
             }
-            freq[ch-'a']--;
+            freq[j] -= wordsFreqArr[i][j];
+            take += (score[j]*wordsFreqArr[i][j]);
         }
 
-        //if we can take the word
-        if(cantake){
-            take=take+helper(i+1,words,freq,score);
+        if (canTakeWord) {
+            take += helper(i + 1, wordsFreqArr, freq, score);
         } else {
             take=0;
         }
-        
 
-        //restore freq
-        for(char ch : words[i]){
-            freq[ch-'a']++;
+        // restore freq
+        for (int j = 0; j<26 ; j++) {
+            freq[j] += wordsFreqArr[i][j];
         }
 
-        int nottake=helper(i+1,words,freq,score);
-        return max(take,nottake);
+        int nottake = helper(i + 1, wordsFreqArr, freq, score);
+        return max(take, nottake);
     }
 
-    int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) {
-        vector<int>freq(26,0);
-        for(char c : letters){
-            freq[c-'a']++;
+    int maxScoreWords(vector<string>& words, vector<char>& letters,
+                      vector<int>& score) {
+        vector<int> freq(26, 0);
+        for (char c : letters) {
+            freq[c - 'a']++;
         }
-        return helper(0,words,freq,score);
+        int n = words.size();
+        vector<vector<int>> wordsFreqArr(n, vector<int>(26, 0));
 
+        for (int i = 0; i < n; i++) {
+            for (char ch : words[i]) {
+                wordsFreqArr[i][ch - 'a']++;
+            }
+        }
+
+        return helper(0, wordsFreqArr, freq, score);
     }
 };
