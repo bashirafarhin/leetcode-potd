@@ -1,12 +1,21 @@
 class Solution {
 public:
     long long maximumValueSum(vector<int>& nums, int k, vector<vector<int>>& edges) {
-    long long sum = 0, cnt = 0, sacrifice = INT_MAX;
-    for (long long n : nums) {
-        sum += max(n ^ k, n);
-        cnt += (n ^ k) > n;
-        sacrifice = min(sacrifice, abs(n - (n ^ k)));
+        long long ans=0;
+        int damage=INT_MAX;
+        int count=0;
+        for(int node : nums){
+            if((node ^ k) >node){
+                ans+=node^k;
+                count++;
+            } else {
+                ans+=node;
+            }
+            damage=min(damage,abs(node-(node^k)));
+        }
+        if(count & 1){
+            ans-=damage;
+        }
+        return ans;
     }
-    return sum - (cnt % 2 ? sacrifice : 0);
-}
 };
