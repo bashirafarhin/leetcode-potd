@@ -1,99 +1,58 @@
 class Solution {
 public:
-    vector<int>rowDir = {-1, 1, 0, 0};
-    vector<int>colDir = {0, 0, -1, 1};
-    bool isValid(vector<vector<bool>>&visited, int i, int j)
-    {
-        if (i < 0 || j < 0 || i == visited.size() || j == visited[0].size() || visited[i][j])
-            return false;
-        return true;
-    }
-    //============================================================================================================
-    bool isSafe(vector<vector<int>>&distToTheif, int safeDist) //check the validity of safenessFactor
-    {
-        int n = distToTheif.size();
-        queue<pair<int, int>>q;
-        if (distToTheif[0][0] < safeDist) return false;
-        q.push({0, 0});
-        vector<vector<bool>>visited(n, vector<bool>(n, false));
-        visited[0][0] = true;
-        while(!q.empty())
-        {
-            int currRow = q.front().first, currCol = q.front().second;
-            q.pop();
-            if (currRow == n - 1 && currCol == n - 1) return true;
-            for (int dirIdx = 0; dirIdx < 4; dirIdx++)
-            {
-                int newRow = currRow + rowDir[dirIdx];
-                int newCol = currCol + colDir[dirIdx];
-                if (isValid(visited, newRow, newCol))
-                {
-                    if (distToTheif[newRow][newCol] < safeDist) continue;
-                    visited[newRow][newCol] = true;
-                    q.push({newRow, newCol});
+    int maximumSafenessFactor(vector<vector<int>>& grid) {
+        int r=grid.size();
+        int c=grid[0].size();
+        vector<vector<int>>dxy={{-1,0},{0,1},{1,0},{0,-1}};
+
+        //preComputing safeness factor of each cell
+        vector<vector<int>>safenessFactor(r,vector<int>(c,1e9));
+        queue<pair<int,int>>sq;
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                if(grid[i][j]==1){
+                    safenessFactor[i][j]=0;
+                    sq.push({i,j});
                 }
             }
         }
-        return false;
-    }
-    //===========================================================================================================
-    int maximumSafenessFactor(vector<vector<int>>& grid) 
-    {
-        int n = grid.size();
-        queue<pair<int, int>>q;
-        vector<vector<bool>>visited(n, vector<bool>(n, false));
-        vector<vector<int>>distToTheif(n, vector<int>(n, -1));
-        //========================================================================
-        //Add all the theives in current queue
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                if (grid[i][j] == 1) 
-                {
-                    visited[i][j] = true;
-                    q.push({i, j});
+        while(!sq.empty()){
+            int x=sq.front().first;
+            int y=sq.front().second;
+            sq.pop();
+            for(int i=0;i<4;i++){
+                int nx=dxy[i][0]+x;
+                int ny=dxy[i][1]+y;
+                if(nx>=0 && nx<r && ny>=0 && ny<c && safenessFactor[nx][ny]==1e9){
+                    safenessFactor[nx][ny]=safenessFactor[x][y]+1;
+                    sq.push({nx,ny});
                 }
             }
         }
-        //=============================================================================
-        //BFS to fill the "DistToTheif" 2D array
-        int dist = 0;
-        while(!q.empty())
-        {
-            int size = q.size();
-            while(size--)
-            {
-                int currRow = q.front().first, currCol = q.front().second;
-                q.pop();
-                distToTheif[currRow][currCol] = dist;
-                for (int dirIdx = 0; dirIdx < 4; dirIdx++)
-                {
-                    int newRow = currRow + rowDir[dirIdx], newCol = currCol + colDir[dirIdx];
-                    if (!isValid(visited, newRow, newCol)) continue;
-                    
-                    visited[newRow][newCol] = true;
-                    q.push({newRow, newCol});
+
+        //calculating ans
+        priority_queue<pair<int,pair<int,int>>>pq;
+        vector<vector<int>>vis(r,vector<int>(c,0));
+        pq.push({safenessFactor[0][0],{0,0}});
+        vis[0][0]=1;
+        while(!pq.empty()){
+            int x=pq.top().second.first;
+            int y=pq.top().second.second;
+            int sf=pq.top().first;
+            pq.pop();
+            if(x==r-1 && y==c-1){
+                return sf;
+            }
+            for(int i=0;i<4;i++){
+                int nx=dxy[i][0]+x;
+                int ny=dxy[i][1]+y;
+                if(nx>=0 && nx<r && ny>=0 && ny<c && !vis[nx][ny]){
+                    vis[nx][ny]=1;
+                    int nextSf=min(sf,safenessFactor[nx][ny]);
+                    pq.push({nextSf,{nx,ny}});
                 }
             }
-            dist++;
         }
-        //==================================================================================
-        //BINARY SEARCH
-        int low = 0, high = INT_MAX;
-        int ans = 0;
-        while(low <= high)
-        {
-            int mid = low + (high - low) / 2;
-            if (isSafe(distToTheif, mid))
-            {
-                ans = mid;
-                low = mid + 1;
-            }
-            else high = mid - 1;
-        }
-        //=========================================================================================
-        return ans;
-        
+        return 0;
     }
 };
