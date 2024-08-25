@@ -1,36 +1,27 @@
 class Solution {
 public:
     int trap(vector<int>& height) {
-        int n = height.size();
-        int lmax = height[0];
-        int rmax = height[n-1];
-        int lpos = 1;
-        int rpos = n-2;
-        int water = 0;
-        while(lpos <= rpos)
-        {
-            if(height[lpos] >= lmax)
-            {
-                lmax = height[lpos];
-                lpos++;
-            }
-            else if(height[rpos] >= rmax)
-            {
-                rmax = height[rpos];
-                rpos--;
-            }
-            else if(lmax <= rmax && height[lpos] < lmax)
-            {
-                water += lmax - height[lpos];
-                lpos++;
-            }
-            else
-            {
-                water += rmax - height[rpos];
-                rpos--;
-            }
-        
+        // min(leftMax,rightMax)-arr[i]=water units stored by arr[i]
+        int n=height.size();
+        vector<int>leftMax(n,-1);
+        vector<int>rightMax(n,-1);
+        int maxHeight=height[0];
+        for(int i=1;i<n;i++){
+            maxHeight=max(maxHeight,height[i]);
+            leftMax[i]=maxHeight;
         }
-        return water;
+        maxHeight=height[n-1];
+        for(int i=n-2;i>=0;i--){
+            maxHeight=max(maxHeight,height[i]);
+            rightMax[i]=maxHeight;
+        }
+        int result=0;
+        for(int i=0;i<n;i++){
+            if(height[i]<leftMax[i] && height[i]<rightMax[i]){
+                int waterUnits=min(leftMax[i],rightMax[i])-height[i];
+                result+=waterUnits;
+            }
+        }
+        return result;
     }
 };
