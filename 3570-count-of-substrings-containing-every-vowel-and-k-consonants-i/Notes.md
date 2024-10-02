@@ -1,0 +1,1 @@
+<h2>count-of-substrings-containing-every-vowel-and-k-consonants-i Notes</h2><hr>[ Time taken: 1 hr 51 m 54 s ]
