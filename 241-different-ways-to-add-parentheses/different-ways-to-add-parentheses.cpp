@@ -1,29 +1,25 @@
 class Solution {
 public:
-    vector<int> solve(string exp, int s, int e) {
-        if (e - s == 1) {
-            int n = (exp[s] - '0') * 10 + (exp[e] - '0');
-            return {n};
+    vector<int> helper(int i, int j, string& exp){
+        if(j-i+1<=2){
+            if(j-i+1==1){
+                return {exp[i]-48};
+            }
+            return {(exp[i]-48)*10+(exp[i+1]-48)};
         }
-        if (e == s) {
-            int n = exp[s] - '0';
-            return {n};
-        }
-
-        vector<int> ans;
-        for (int j = s; j <= e; j++) {
-            if (exp[j] == '+' || exp[j] == '-' || exp[j] == '*') {
-                vector<int> l = solve(exp, s, j - 1);
-                vector<int> r = solve(exp, j + 1, e);
-
-                for (int n1 : l) {
-                    for (int n2 : r) {
-                        if (exp[j] == '+') {
-                            ans.push_back(n1 + n2);
-                        } else if (exp[j] == '-') {
-                            ans.push_back(n1 - n2);
+        vector<int>ans;
+        for(int k=i+1;k<j;k++){
+            if(exp[k]=='+' || exp[k]=='-' || exp[k]=='*'){
+                vector<int>left=helper(i,k-1,exp);
+                vector<int>right=helper(k+1,j,exp);
+                for(int n1 : left){
+                    for(int n2 : right){
+                        if(exp[k]=='+'){
+                            ans.push_back(n1+n2);
+                        } else if(exp[k]=='-'){
+                            ans.push_back(n1-n2);
                         } else {
-                            ans.push_back(n1 * n2);
+                            ans.push_back(n1*n2);
                         }
                     }
                 }
@@ -32,7 +28,7 @@ public:
         return ans;
     }
     vector<int> diffWaysToCompute(string expression) {
-        int n = expression.length();
-        return solve(expression, 0, n - 1);
+       int n=expression.length();
+       return helper(0, n-1,expression); 
     }
 };
