@@ -5,29 +5,32 @@ public:
             return nums;
         }
         int n=nums.size();
-        int sum=0;
-        vector<int>power;
-
-        for(int i=1;i<k;i++){
-            sum=(nums[i]==nums[i-1]+1) ? sum+1 : 0;
-        }
-
-        if(sum==k-1){
-            power.push_back(nums[k-1]);
-            sum--;
-        } else {
-            power.push_back(-1);
-        }
-
-        for(int i=k;i<n;i++){
-            sum=(nums[i]==nums[i-1]+1) ? sum+1 : 0;
-            if(sum==k-1){
-                power.push_back(nums[i]);
-                sum--;
-            } else {
-                power.push_back(-1);
+        vector<int>arr;
+        for(int i=0;i<k-1;i++){
+            if(arr.empty() || nums[i-1]==nums[i]-1){
+                arr.push_back(nums[i]);
+            } else if(nums[i-1] !=nums[i]-1){
+                arr={};
+                arr.push_back(nums[i]);
             }
         }
-        return power;
+
+        vector<int>ans;
+        for(int i=k-1;i<n;i++){
+            if(arr.empty() || nums[i-1]==nums[i]-1){
+                arr.push_back(nums[i]);
+                if(arr.size()==k){
+                    ans.push_back(nums[i]);
+                    arr.erase(arr.begin());
+                } else {
+                    ans.push_back(-1);
+                }
+            } else if(nums[i-1] !=nums[i]-1){
+                arr={};
+                ans.push_back(-1);
+                arr.push_back(nums[i]);
+            }
+        }
+        return ans;
     }
 };
