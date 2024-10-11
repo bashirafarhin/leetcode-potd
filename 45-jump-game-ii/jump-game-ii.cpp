@@ -1,19 +1,21 @@
 class Solution {
-    int solve(vector<int>&nums,int i,vector<int>& dp){
-        if(i>=nums.size()-1){
-            return 0;}
-        if(dp[i] !=-1){return dp[i];}
-        int range=nums[i];
-        int ans=1e9;
-        for(int j=range;j>=1;j--){
-         
-            ans= min( ans , 1+ solve(nums,i+j,dp));
-        }
-        return dp[i]=ans;
-    }
 public:
     int jump(vector<int>& nums) {
-        vector<int> dp(nums.size(),-1);
-        return  solve(nums,0,dp);
+        int n=nums.size();
+        int left=0;
+        int right=0;
+        int moves=0;
+        while(right<n-1){
+            int maxRangeInd=-1;
+            for(int i=left;i<=right;i++){
+                if(i+nums[i]>maxRangeInd){
+                    maxRangeInd=i+nums[i];
+                }
+            }
+            left=right+1;
+            right=maxRangeInd;
+            moves++;
+        }
+        return moves;
     }
 };
