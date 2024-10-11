@@ -1,21 +1,23 @@
 class Solution {
 public:
     int jump(vector<int>& nums) {
-        int n=nums.size();
-        int left=0;
-        int right=0;
-        int moves=0;
-        while(right<n-1){
-            int maxRangeInd=-1;
-            for(int i=left;i<=right;i++){
-                if(i+nums[i]>maxRangeInd){
-                    maxRangeInd=i+nums[i];
+        int n = nums.size();
+        if(n==1){
+            return 0;
+        }
+        stack<pair<int, int>> st;
+        for (int i = nums.size() - 1; i >= 0; i--) {
+            if (st.empty() || i + nums[i] >= st.top().first) {
+                while (!st.empty() && i + nums[i] >= st.top().second) {
+                    st.pop();
+                }
+                if (st.empty()) {
+                    st.push({i, n - 1});
+                } else {
+                    st.push({i, st.top().first});
                 }
             }
-            left=right+1;
-            right=maxRangeInd;
-            moves++;
         }
-        return moves;
+        return st.size();
     }
 };
