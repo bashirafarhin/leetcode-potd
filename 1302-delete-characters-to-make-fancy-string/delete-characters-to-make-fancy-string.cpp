@@ -4,17 +4,15 @@ public:
         int n = s.length();
         stack<char> st;
         string ans = "";
-        int i=0;
+        int i = 0;
         while (i < n) {
-            if (!st.empty() && st.top() == s[i]) {
-                st.push(s[i]);
-                ans+=s[i];
-                while (i<n && st.top() == s[i]) {
-                    i++;
-                }
-            } else {
-                st.push(s[i]);
-                ans+=s[i];
+            int j = i;
+            while (ans.size() != 0 && ans.back() == s[i] && i + 1 < n &&
+                   s[i] == s[i + 1]) {
+                i++;
+            }
+            if (j == i) {
+                ans += s[i];
                 i++;
             }
         }
