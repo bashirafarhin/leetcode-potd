@@ -9,8 +9,8 @@ public:
         if (dp[i][j] != -1) {
             return dp[i][j];
         }
-        int ans = helper(i + 1, j, src, pat, ind, dp);
-        ans = max(ans, ind[i] + helper(i + 1, j, src, pat, ind, dp));
+        int ans = ind[i] + helper(i + 1, j, src, pat, ind, dp);
+        // ans = max(ans, ind[i] + helper(i + 1, j, src, pat, ind, dp));
         if (src[i] == pat[j]) {
             ans = max(ans, helper(i + 1, j + 1, src, pat, ind, dp));
         }
