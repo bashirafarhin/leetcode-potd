@@ -1,59 +1,46 @@
 class Solution {
 public:
-    bool isVowel(char& ch) {
-        return (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u') == true;
+    static bool isVowel(char ch) {
+        return (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u') ? true : false;
     }
 
     long long countOfSubstrings(string word, int k) {
-        int n = word.length();
         unordered_map<char, int> mp;
+        int start = 0, end = 0, cons = 0, n = word.size();
 
-        vector<int>nextCons(n);
-        int lastCons=n;
-        for(int i=n-1;i>=0;i--){
-            nextCons[i]=lastCons;
-            if(!isVowel(word[i])){
-                lastCons=i;
+        // precomputation
+        vector<int> nextConsPos(n);
+        int last = n;
+        for (int i = n - 1; i >= 0; i--) {
+            nextConsPos[i] = last;
+            if (!isVowel(word[i])) {
+                last = i;
             }
         }
 
-        int cons = 0;
-        int start = 0;
         long long ans = 0;
-        for (int end = 0; end < n; end++) {
-            char ch = word[end];
-            if (isVowel(ch)) {
-                mp[ch]++;
-            } else {
-                cons++;
-            }
-
-            while (start<=end && cons > k) {
-                char st = word[start];
-                if (isVowel(st)) {
-                    mp[st]--;
-                    if (mp[st] == 0) {
-                        mp.erase(st);
-                    }
+        while (end < n) {
+            isVowel(word[end]) ? mp[word[end]]++ : cons++;
+            while (cons > k) {
+                if (isVowel(word[start])) {
+                    mp[word[start]]--;
+                    if (!mp[word[start]]) { mp.erase(word[start]);  }
                 } else {
                     cons--;
                 }
                 start++;
             }
-
-            while (start<end && cons == k && mp.size() == 5) {
-                ans += (nextCons[end] - end);
-                char st = word[start];
-                if (isVowel(st)) {
-                    mp[st]--;
-                    if (mp[st] == 0) {
-                        mp.erase(st);
-                    }
+            while (start < end && mp.size() == 5 && cons == k) {
+                ans += abs(nextConsPos[end] - end);
+                if (isVowel(word[start])) {
+                    mp[word[start]]--;
+                    if (!mp[word[start]]) { mp.erase(word[start]); }
                 } else {
                     cons--;
                 }
                 start++;
             }
+            end++;
         }
         return ans;
     }
