@@ -1,45 +1,48 @@
 class Solution {
 public:
     vector<int> validSequence(string word1, string word2) {
-        int l1=word1.size();
-        int l2=word2.size();
-        vector<int>next(l2,-1);
-        int j=l2-1;
-        for(int i=l1-1;i>=0 && j>=0;i--){
+        int n=word1.size();
+        int m=word2.size();
+
+        //precomputation
+        int j=m-1;
+        vector<int>preComp(m,-1);
+        for(int i=n-1;i>=0 && j>=0;i--){
             if(word1[i]==word2[j]){
-                next[j]=i;
+                preComp[j]=i;
                 j--;
+                cout<<i<<" ";
             }
         }
-        vector<int>result;
-        int k=1;
+        vector<int>ans;
+        int i=0;
         j=0;
-        for(int i=0;i<l1 && j<l2;i++){
+        while(i<n && j<m){
             if(word1[i]==word2[j]){
-                result.push_back(i);
+                ans.push_back(i);
+                i++;
                 j++;
             } else {
-                //change
-                if(k>0){
-                bool isNextFind=true;
-                for(int k=j+1;k<l2;k++){
-                    if(next[k]<=i){
-                        isNextFind=false;
-                        break;
+                //considering changing ith index;
+                if(j+1<m && preComp[j+1]<=i){
+                    i++;
+                    continue;
+                }
+                ans.push_back(i);
+                int p=i+1;
+                int q=j+1;
+                while(p<n && q<m){
+                    if(word1[p]==word2[q]){
+                        ans.push_back(p);
+                        q++;
                     }
+                    p++;
                 }
-                if(isNextFind){
-                    cout<<"in"<<endl;
-                    result.push_back(i);
-                    j++;
-                    k--;
-                }
-                
-                }
+                return ans;
             }
         }
-        if(j==l2){
-            return result;
+        if(j==m){
+            return ans;
         }
         return {};
     }
