@@ -5,8 +5,8 @@ public:
         long long axorx = 0;
         long long bxorx = 0;
         for (long long i = 49; i >= 0; i--) {
-            bool aBit = a & (1LL << i);
-            bool bBit = b & (1LL << i);
+            int aBit = (a >> i) & 1;
+            int bBit = (b >> i) & 1;
             if (i >= n) {
                 if (aBit) {
                     axorx = axorx | (1LL << i);
