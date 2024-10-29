@@ -1,0 +1,1 @@
+<h2>minimum-number-of-flips-to-make-the-binary-string-alternating Notes</h2><hr>[ Time taken: 2 hrs 7 m 4 s ]
