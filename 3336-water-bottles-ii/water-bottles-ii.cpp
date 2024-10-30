@@ -4,10 +4,10 @@ public:
        int emptyB=0;
        int count=0;
        while(numBottles+emptyB>=numExchange){
-        count+=numBottles;
-        emptyB+=numBottles;
-        numBottles=0;
-        while(numExchange<=emptyB){
+        count+=1;
+        emptyB+=1;
+        numBottles-=1;
+        if(numExchange<=emptyB){
             emptyB-=numExchange;
             numExchange+=1;
             numBottles+=1;
