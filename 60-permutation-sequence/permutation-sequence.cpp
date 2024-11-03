@@ -3,8 +3,13 @@ public:
     string helper(int n, int k, vector<int>&arr) {
         if(n == 1) { return to_string(arr[1]); }
         int colSize = tgamma(n);
-        int col = (k-1) / colSize + 1;
-        int rem = (k-1) % colSize + 1;
+        int col = k / colSize;
+        int rem = k % colSize;
+        if(rem==0){
+            rem=colSize;
+        } else {
+            col++;
+        }
         char colNum = arr[col]+'0';
         arr.erase(arr.begin()+col);
         string nextPerm = helper(n - 1, rem, arr);
