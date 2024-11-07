@@ -9,21 +9,22 @@
 
 class Solution {
 public:
-    
-    int solve(int s,int e){
-        int num=s + (e-s)/2;
-
-        int ans=guess(num);
-        if(ans==1){
-           return solve(num+1,e);
-        }else if(ans==-1){
-          return solve(s,num-1);
-        }
-      return num;
-    }
-
-
     int guessNumber(int n) {
-        return solve(1,n);     
+        int l=1;
+        int h=n;
+        int pick;
+        while(l<=h){
+            int m=l+(h-l)/2;
+            int userGuess=guess(m);
+            if(!userGuess){
+                pick=m;
+                break;
+            } else if (userGuess==1){
+                l=m+1;
+            } else {
+                h=m-1;
+            }
+        }
+        return pick;
     }
 };
