@@ -1,14 +1,10 @@
 class Solution {
 public:
     string losingPlayer(int x, int y) {
-        int turn=1;
-        while(true){
-            if(x<1 || y<4){
-                return !turn ? "Alice" : "Bob";
-            }
-            x--;
-            y-=4;
-            turn=1-turn;
+        int level=y/4;
+        if(level<=x){
+            return (y % 8)>=4 ? "Alice" : "Bob";
         }
+        return x & 1 ? "Alice" : "Bob";
     }
 };
