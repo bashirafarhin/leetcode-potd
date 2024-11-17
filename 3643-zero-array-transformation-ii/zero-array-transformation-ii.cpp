@@ -10,10 +10,8 @@ public:
             prefix[l]+=val;
             prefix[r+1]-=val;
         }
-        for(int i=1;i<n;i++){
-            prefix[i]+=prefix[i-1];
-        }
         for(int i=0;i<n;i++){
+            if(i !=0) prefix[i]+=prefix[i-1];
             if(nums[i]>prefix[i]){ return 0; }
         }
         return 1;
