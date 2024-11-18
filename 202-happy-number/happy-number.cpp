@@ -1,7 +1,9 @@
 class Solution {
 public:
     bool isHappy(int n) {
-        while(n>5){
+        unordered_set<int>st;
+        while(st.find(n)==st.end()){
+            st.insert(n);
             int sum=0;
             while(n){
                 sum+=((n%10)*(n%10));
