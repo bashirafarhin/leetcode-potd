@@ -1,0 +1,1 @@
+<h2>count-the-number-of-powerful-integers Notes</h2><hr>[ Time taken: 13 hrs 4 m 49 s ]
