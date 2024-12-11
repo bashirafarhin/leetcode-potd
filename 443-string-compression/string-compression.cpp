@@ -22,10 +22,6 @@ public:
                 }
             }
         }
-
-        while (chars.size() != i) {
-            chars.pop_back();
-        }
-        return chars.size();
+        return i;
     }
 };
