@@ -1,39 +1,33 @@
 class Solution {
 public:
     bool closeStrings(string word1, string word2) {
-    int l1=word1.length();
-    int l2=word2.length();
-    if(l1 !=l2){return false;}
-    unordered_map<char,int>mp1;
-    for(int i=0;i<l1;i++){
-     mp1[word1[i]]++;
-    }
-    unordered_map<char,int>mp2;
-    for(int i=0;i<l1;i++){
-     mp2[word2[i]]++;
-    }
-    for(auto it : mp1){
-        if(mp2.count(it.first)==0){return false;}
-    }
-    
-    vector<int> arr1;
-    vector<int> arr2;
-
-    for(auto it : mp1){
-        arr1.push_back(it.second);
-        }
-    for(auto it : mp2){
-        arr2.push_back(it.second);
-        }
-    
-    sort(arr1.begin(),arr1.end());
-    sort(arr2.begin(),arr2.end());
-    
-    for(int i=0;i<arr1.size();i++){
-        if(arr1[i] !=arr2[i]){return false;}
-    }
-
-   
-    return true;
+       int n=word1.size();
+       int m=word2.size();
+       if(n !=m){ return false; }
+       unordered_map<char,int>freq1;
+       for(char ch : word1){
+        freq1[ch]++;
+       }
+       unordered_map<char,int>freq2;
+       for(char ch : word2){
+        freq2[ch]++;
+       }
+       //every character of word1 should be present in word2 and vice versa
+       for(char ch : word1){
+        if(freq2.find(ch)==freq2.end()){ return false; }
+       }
+       for(char ch : word2){
+        if(freq1.find(ch)==freq1.end()){ return false; }
+       }
+       //frequency of words should match
+       unordered_map<int,int>mp1;
+       for(auto it : freq1){
+        mp1[it.second]++;
+       }
+       unordered_map<int,int>mp2;
+       for(auto it : freq2){
+        mp2[it.second]++;
+       }
+       return mp1==mp2;
     }
 };
