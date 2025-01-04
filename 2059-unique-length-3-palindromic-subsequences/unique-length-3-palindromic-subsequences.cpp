@@ -1,40 +1,21 @@
 class Solution {
-private:
-    int first_occ_Ind(int ind, int n, string& s){
-        for(int i = 0; i < n; i++){
-            if(s[i] - 'a' == ind) return i;
-        }
-        return -1;
-    }
-    int last_occ_Ind(int ind, int n, string& s){
-        for(int i = n - 1; i >= 0; i--){
-            if(s[i] - 'a' == ind) return i;
-        }
-        return -1;
-    }
 public:
     int countPalindromicSubsequence(string s) {
-        int n = s.size();
-        vector<int> freq(26,0);
-        for(int i = 0;i < n; i++){
-            freq[s[i] - 'a']++;
-        }
-
-        int ans = 0;
-
-        for(int i = 0; i < 26; i++){
-            if(freq[i] >= 2){
-                int first_occurance = first_occ_Ind(i, n, s);
-                int last_occurance = last_occ_Ind(i, n, s);
-
-                if(first_occurance == -1 || last_occurance == -1) continue;
-
-                set<int> st;
-                for(int j = first_occurance + 1; j < last_occurance; j++){
-                    st.insert(s[j]);
-                } 
-
-                ans += st.size();
+        int n = s.length();
+        vector<int> arr(26, 0);
+        int ans=0;
+        for (int i = 0; i < n; i++) {
+            if (arr[s[i] - 'a']) { continue; }
+            arr[s[i]-'a']=1;
+            for (int j = n - 1; j > i; j--) {
+                if (s[j] == s[i]) {
+                    unordered_set<char> st;
+                    for (int k = i + 1; k < j; k++) {
+                        st.insert(s[k]);
+                    }
+                    ans+=st.size();
+                    break;
+                }
             }
         }
         return ans;
