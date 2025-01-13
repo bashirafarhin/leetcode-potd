@@ -1,18 +1,25 @@
 class Solution {
 public:
     int minimumLength(string s) {
-        int n=s.length();
-        vector<int>freq(26,0);
-        for(int i=0;i<n;i++){
-            freq[s[i]-'a']++;
-        }
-        int res=n;
-        for(int i=0;i<26;i++){
-            while(freq[i]>=3){
-                res-=2;
-                freq[i]-=2;
+        int n=s.size();
+        vector<bool>remove(n,false);
+        int ans=n;
+        for(int i=1;i<n-1;i++){
+            if(remove[i]){ continue; }
+            int left=i-1;
+            int right=i+1;
+            while(left>=0 && s[left] !=s[i]){
+                left--;
+            }
+            while(right<n && s[right] !=s[i]){
+                right++;
+            }
+            if(left>=0 && right<n){
+                remove[left]=true;
+                remove[right]=true;
+                ans-=2;
             }
         }
-        return res;
+        return ans;
     }
 };
