@@ -1,18 +1,31 @@
 class RecentCounter {
-    vector<int>req;
+    int n;
+    vector<int>counter;
 public:
     RecentCounter() {
-        req={};
+        n=0;
+    }
+
+    int upper_bound(int time){
+        int s=0;
+        int e=n;
+        int ans=0;
+        while(s<=e){
+            int m=s+(e-s)/2;
+            if(counter[m]>=time){
+                ans=m;
+                e=m-1;
+            } else {
+                s=m+1;
+            }
+        }
+        return n-ans;
     }
     
     int ping(int t) {
-        req.push_back(t);
-        int cnt=0;
-        for(int i=req.size()-1;i>=0;i--){
-            if(t-3000>req[i]){ break; }
-            cnt++;
-        }
-        return cnt;
+        n++;
+        counter.push_back(t);
+        return upper_bound(t-3000);
     }
 };
 
