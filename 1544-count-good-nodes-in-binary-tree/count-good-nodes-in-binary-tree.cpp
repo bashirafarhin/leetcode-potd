@@ -11,17 +11,16 @@
  */
 class Solution {
 public:
-    int helper(TreeNode* root, int node){
-        if(root==NULL){
-            return 0;
-        }
+    int gn(TreeNode* root, int limit){
+        if(!root){ return 0; }
         int ans=0;
-        if(root->val>=node){
-            return 1+helper(root->left, root->val)+helper(root->right, root->val);
+        if(root->val >= limit){
+            ans++;
         }
-        return helper(root->left, node)+helper(root->right, node);
+        limit=max(limit,root->val);
+        return ans+gn(root->left,limit)+gn(root->right,limit);
     }
     int goodNodes(TreeNode* root) {
-        return helper(root, INT_MIN);
+        return gn(root,INT_MIN);
     }
 };
