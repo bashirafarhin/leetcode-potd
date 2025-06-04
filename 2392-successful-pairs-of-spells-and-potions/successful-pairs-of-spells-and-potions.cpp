@@ -1,27 +1,24 @@
 class Solution {
 public:
-    int helper(int n, vector<int>&portions, long long success){
-        int l=0;
-        int h=portions.size()-1;
-        int ans=portions.size();
-        while(l<=h){
-            int m=(h+(l-h)/2);
-            long long strength=(long long)portions[m]*n;
-            if(strength>=success){
-                ans=m;
-                h=m-1;
-            } else {
-                l=m+1;
+    vector<int> successfulPairs(vector<int>& spells, vector<int>& potions, long long success) {
+        sort(potions.begin(),potions.end());
+        int n=spells.size();
+        int m=potions.size();
+        vector<int>ans(n);
+        for(int i=0;i<n;i++){
+            int start=0;
+            int end=m-1;
+            int lowerBound=-1;
+            while(start<=end){
+                int mid=start+(end-start)/2;
+                if((long long)potions[mid]*spells[i]>=success){
+                    lowerBound=mid;
+                    end=mid-1;
+                } else {
+                    start=mid+1;
+                }
             }
-        }
-        return portions.size()-ans;
-    }
-    
-    vector<int> successfulPairs(vector<int>& spells, vector<int>& portions, long long success) {
-        sort(portions.begin(),portions.end());
-        vector<int>ans;
-        for(int n : spells){
-            ans.push_back(helper(n,portions,success));
+            ans[i]=m-start;
         }
         return ans;
     }
