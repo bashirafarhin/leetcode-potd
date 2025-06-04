@@ -1,57 +1,51 @@
 class Solution {
 public:
-    double dfs(int src, int dst, vector<vector<double>>&graph, vector<int>&vis){
-        if(src==dst){
-            return 1;
-        }
-        vis[src]=1;
-        for(int neigh=0; neigh<graph.size(); neigh++){
-            if(!vis[neigh] && graph[src][neigh]){
-                double subAns=dfs(neigh,dst,graph,vis);
-                if(subAns !=-1){
-                    return (double)graph[src][neigh]*subAns;
-                }
+    double dfs(int src, int dst, vector<vector<vector<double>>>&graph, vector<bool>&vis){
+        vis[src]=true;
+        if(vis[dst]){ return 1; }
+        for(auto edge : graph[src]){
+            int neigh=edge[0];
+            if(vis[neigh]){ continue; }
+            double wt=edge[1];
+            double ans=dfs(neigh, dst, graph, vis);
+            if(ans !=-1){
+                return ans*wt;
             }
         }
-        vis[src]=0;
         return -1;
     }
-
-    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
-        //assign nodes
+    vector<double> calcEquation(vector<vector<string>>& eq, vector<double>& val, vector<vector<string>>& que) {
         unordered_map<string,int>mp;
-        int n=0;
-        for(int i=0;i<equations.size();i++){
-            if(mp.find(equations[i][0])==mp.end()){
-                mp[equations[i][0]]=n;
-                n++;
+        int node=0;
+        for(int i=0;i<eq.size();i++){
+            if(mp.find(eq[i][0])==mp.end()){
+                mp[eq[i][0]]=node;
+                node++;
             }
-            if(mp.find(equations[i][1])==mp.end()){
-                mp[equations[i][1]]=n;
-                n++;
+            if(mp.find(eq[i][1])==mp.end()){
+                mp[eq[i][1]]=node;
+                node++;
             }
         }
-        //make graph
-        vector<vector<double>>graph(n,vector<double>(n,0));
-        for(int i=0;i<equations.size();i++){
-            int u=mp[equations[i][0]];
-            int v=mp[equations[i][1]];
-            graph[u][v]=values[i];
-            graph[v][u]=(double)1/values[i];
+        vector<vector<vector<double>>>graph(node);
+        for(int i=0;i<val.size();i++){
+            string u=eq[i][0];
+            string v=eq[i][1];
+            graph[mp[u]].push_back({ (double)mp[v], val[i]});
+            graph[mp[v]].push_back({ (double)mp[u], 1/val[i]});
         }
+
         vector<double>ans;
-        for(int i=0;i<queries.size();i++){
-            if(mp.find(queries[i][0])==mp.end() || mp.find(queries[i][1])==mp.end()){
+        for(int i=0;i<que.size();i++){
+            string u=que[i][0];
+            string v=que[i][1];
+            if(mp.find(u)==mp.end() || mp.find(v)==mp.end()){
                 ans.push_back(-1);
             } else {
-                if(i==0){cout<<"hii";}
-                int u=mp[queries[i][0]];
-                int v=mp[queries[i][1]];
-                vector<int>vis(n,0);
-                ans.push_back(dfs(u,v,graph,vis));
+                vector<bool>vis(node,false);
+                ans.push_back(dfs(mp[u],mp[v],graph,vis));
             }
         }
         return ans;
-
     }
 };
