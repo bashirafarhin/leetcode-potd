@@ -3,28 +3,31 @@ public:
     int nearestExit(vector<vector<char>>& maze, vector<int>& entrance) {
         int r = maze.size();
         int c = maze[0].size();
-        int steps = 0;
+        vector<vector<bool>> vis(r, vector<bool>(c, false));
         vector<vector<int>> dxy = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
         queue<pair<int, int>> q;
         q.push({entrance[0], entrance[1]});
-        maze[entrance[0]][entrance[1]] = 'V';
+        vis[entrance[0]][entrance[1]]=true;
+        int d = 0;
         while (!q.empty()) {
             int size = q.size();
-            steps++;
+            d++;
             while (size--) {
                 int x = q.front().first;
                 int y = q.front().second;
                 q.pop();
-                for (auto dir : dxy) {
-                    int newR = x + dir[0];
-                    int newC = y + dir[1];
-                    if (newR >= 0 && newR < r && newC >= 0 && newC < c && maze[newR][newC] == '.') {
-                        if (newR == 0 || newR == r - 1 || newC == 0 || newC == c - 1) {
-                            return steps;
-                        }
-                        q.push({newR, newC});
-                        maze[newR][newC] = 'V';
+                for (int i = 0; i < 4; i++) {
+                    int nx = x + dxy[i][0];
+                    int ny = y + dxy[i][1];
+                    if (nx < 0 || nx == r || ny < 0 || ny == c ||
+                        maze[nx][ny] == '+' || vis[nx][ny]) {
+                        continue;
                     }
+                    if (nx == 0 || nx == r - 1 || ny == 0 || ny == c - 1) {
+                        return d;
+                    }
+                    q.push({nx, ny});
+                    vis[nx][ny] = true;
                 }
             }
         }
