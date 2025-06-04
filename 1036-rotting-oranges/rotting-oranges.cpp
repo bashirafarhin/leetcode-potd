@@ -1,32 +1,46 @@
 class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
-     int R=grid.size();
-     int C=grid[0].size();
-     queue<pair<int,pair<int,int>>> q;
-     for(int i=0;i<R;i++){
-      for(int j=0;j<C;j++){
-          if(grid[i][j]==2){q.push({0,{i,j}});}}}
-     int cnt=0;
-     while(!q.empty()){
-         cnt=q.front().first;
-         int r=q.front().second.first;
-         int c=q.front().second.second;
-         q.pop();
-         int dx[]={-1,0,1,0};
-         int dy[]={0,1,0,-1};
-         for(int i=0;i<4;i++){
-          int new_row=r+dx[i];
-          int new_col=c+dy[i];
-              if(new_row>=0 && new_row<R && new_col>=0 && new_col<C && grid[new_row][new_col]==1){
-                  grid[new_row][new_col]=2;
-                  q.push({cnt+1,{new_row,new_col}});}
-              }
-     }
-     //queue empty now check if fresh tomatoes are available
-     for(int i=0;i<R;i++){
-      for(int j=0;j<C;j++){
-          if(grid[i][j]==1){return -1;}}}
-          return cnt;
+        int r = grid.size();
+        int c = grid[0].size();
+        vector<vector<int>> dxy = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+        queue<pair<int, int>> q;
+        for(int x=0;x<r;x++){
+            for(int y=0;y<c;y++){
+                if(grid[x][y]==2){
+                    q.push({x,y});
+                }
+            }
+        }
+        int time = 0;
+        while (!q.empty()) {
+            int size = q.size();
+            while (size--) {
+                int x = q.front().first;
+                int y = q.front().second;
+                q.pop();
+                for (int i = 0; i < 4; i++) {
+                    int nx = x + dxy[i][0];
+                    int ny = y + dxy[i][1];
+                    if (nx>=0 && nx<r && ny>=0 && ny<c && grid[nx][ny]==1) {
+                        grid[nx][ny]=2;
+                        q.push({nx, ny});
+                    }
+                }
+            }
+            time++;
+        }
+
+        for(int x=0;x<r;x++){
+            for(int y=0;y<c;y++){
+                if(grid[x][y]==1){
+                    return -1;
+                }
+            }
+        }
+        if(!time){
+            return 0;
+        }        
+        return time-1;
     }
 };
