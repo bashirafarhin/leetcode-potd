@@ -1,20 +1,22 @@
 class Solution {
 public:
     int minFlips(int a, int b, int c) {
-     int flips=0;
-     while(c !=0 || a !=0 || b !=0){
-      int la=a & 1;
-      int lb=b & 1;
-      int lc=c & 1;
-      if(lc==1 && la==0 && lb==0 ){flips++;}
-      else if(lc==0){
-          if(la==1 && lb==1){flips+=2;}
-          else if(la==1 || lb==1){flips++;}
-      }
-      a>>=1;
-      b>>=1;
-      c>>=1;
-     }
-     return flips;
+        int ans=0;
+        while(a || c || b){
+            int a_last_bit=a & 1;
+            int b_last_bit=b & 1;
+            int c_last_bit=c & 1;
+            if(c_last_bit){
+                if(!a_last_bit && !b_last_bit){ ans++; }
+            } else {
+                if(a_last_bit){ ans++; }
+                if(b_last_bit){ ans++; }
+            }
+            cout<<ans<<endl;
+            a>>=1;
+            b>>=1;
+            c>>=1;
+        }
+        return ans;
     }
 };
