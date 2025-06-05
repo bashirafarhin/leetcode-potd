@@ -10,21 +10,15 @@
 class Solution {
 public:
     int guessNumber(int n) {
-        int l=1;
-        int h=n;
-        int pick;
-        while(l<=h){
-            int m=l+(h-l)/2;
-            int userGuess=guess(m);
-            if(!userGuess){
-                pick=m;
-                break;
-            } else if (userGuess==1){
-                l=m+1;
-            } else {
-                h=m-1;
-            }
+        int start=0;
+        int end=n;
+        while(start<=end){
+            int myGuess=start+(end-start)/2;
+            int check=guess(myGuess);
+            if(!check){ return myGuess; }
+            else if(check>0){ start=myGuess+1; }
+            else{ end=myGuess-1; }
         }
-        return pick;
+        return -1;
     }
 };
