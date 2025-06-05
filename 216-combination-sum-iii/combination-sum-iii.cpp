@@ -1,21 +1,25 @@
 class Solution {
-    void solve(int i,int k,int target,vector<int>&path,vector<vector<int>>&ans){
-        if(target==0 && k==0){
-            ans.push_back(path);
-            return;}
-        // if(k==0 || i==10){return ;}
-        for(int j=i;j<=9;j++){
-            path.push_back(j);
-            solve(j+1,k-1,target-j,path,ans);
-            path.pop_back();
+public:
+    void comb(int num, int k, int sum, vector<int>& curr, vector<vector<int>>& ans) {
+        if (sum == 0 && k == 0) {
+            ans.push_back(curr);
+            return;
+        }
+        if (num > 9) {
+            return;
+        }
+        if (sum - num >= 0 && k-1>=0) {
+            curr.push_back(num);
+            comb(num + 1, k - 1, sum - num, curr, ans);
+            curr.pop_back();
+            comb(num + 1, k, sum, curr, ans);
         }
         return;
     }
-public:
     vector<vector<int>> combinationSum3(int k, int n) {
-        vector<vector<int>>ans;
-        vector<int>path;
-        solve(1,k,n,path,ans);
+        vector<int> curr;
+        vector<vector<int>> ans;
+        comb(1, k, n, curr, ans);
         return ans;
     }
 };
