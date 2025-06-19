@@ -1,23 +1,27 @@
 class Solution {
 public:
-    int jump(vector<int>& nums) {
-        int n = nums.size();
-        if(n==1){
+    int minSteps(vector<int>& nums, int i, vector<int>&dp){
+        if(i>=nums.size()-1){
             return 0;
         }
-        stack<pair<int, int>> st;
-        for (int i = nums.size() - 1; i >= 0; i--) {
-            if (st.empty() || i + nums[i] >= st.top().first) {
-                while (!st.empty() && i + nums[i] >= st.top().second) {
-                    st.pop();
-                }
-                if (st.empty()) {
-                    st.push({i, n - 1});
-                } else {
-                    st.push({i, st.top().first});
-                }
-            }
+        if(dp[i] !=-1){
+            return dp[i];
         }
-        return st.size();
+        int ans=INT_MAX;
+        for(int range=nums[i]; range>0 ; range--){
+            int next=minSteps(nums,i+range,dp);
+            if(next != INT_MAX){
+                next++;
+            }
+            ans=min(ans,next);
+        }
+        return dp[i]=ans;
+
+    }
+    int jump(vector<int>& nums) {
+        int n=nums.size();
+        vector<int>dp(n,-1);
+        int ans =  minSteps(nums,0,dp);
+        return ans == INT_MAX ? -1 : ans;
     }
 };
