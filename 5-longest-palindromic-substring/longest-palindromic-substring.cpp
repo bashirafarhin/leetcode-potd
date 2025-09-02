@@ -1,37 +1,38 @@
 class Solution {
 public:
-    string longestPalindrome(string s) {
-        int n=s.length();
-        int len=0;
-        int ans[2]={0,0};
-        for(int i=0;i<n;i++){
-            int start=i;
-            int end=i;
-            while(start>=0 && end<s.length() && s[start]==s[end]){
-            start--;
-            end++;
-            }
-            end--;
-            start++;
-            if(len<end-start+1){
-                ans[0]=start;
-                ans[1]=end;
-                len=end-start+1;
-            }
-            start=i;
-            end=i+1;
-            while(start>=0 && end<s.length() && s[start]==s[end]){
-            start--;
-            end++;
-            }
-            start++;
-            end--;
-            if(len<end-start+1){
-                ans[0]=start;
-                ans[1]=end;
-                len=end-start+1;
-            }
+
+    int expand(int left, int right, string&s ){
+        int n=s.size();
+        int len=1;
+        while(left>=0 && right<n && s[left]==s[right]){
+                left--;
+                right++;
+                len+=2;
         }
-        return s.substr(ans[0],ans[1]-ans[0]+1);
+        return len;
+    }
+
+    string longestPalindrome(string s) {
+        int maxLength=0;
+        int start=0;
+        int n=s.size();
+        for(int i=0; i<n;i++){
+
+            int left=i-1;
+            int right=i+1;
+            int len=1;
+            while(left>=0 && right<n && s[left]==s[right]){ left--; right++; len+=2; }
+
+            if(len>maxLength){ maxLength=len; start=left+1; }
+
+            left=i;
+            right=i+1;
+            len=0;
+            while(left>=0 && right<n && s[left]==s[right]){ left--; right++; len+=2; }
+
+            if(len>maxLength){ maxLength=len; start=left+1; }
+
+        }
+        return s.substr(start, maxLength);
     }
 };
