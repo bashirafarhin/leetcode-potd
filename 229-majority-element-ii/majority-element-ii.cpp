@@ -4,51 +4,51 @@ public:
         int k = 3;
         int maxMajority = k - 1;
         int n = nums.size();
-        vector<int> me(maxMajority, INT_MAX);
-        vector<int> mec(maxMajority, 0);
+        vector<int> candidates(maxMajority, INT_MAX);
+        vector<int> counter(maxMajority, 0);
 
         for (int i = 0; i < n; i++) {
-            bool flag = true;
-            int ind = -1;
+            bool found = true;
+            int emptySlot = -1;
 
             for (int j = 0; j < maxMajority; j++) {
-                if (nums[i] == me[j]) {
-                    flag = false;
-                    mec[j]++;
+                if (nums[i] == candidates[j]) {
+                    found = false;
+                    counter[j]++;
                     break;
                 }
-                if (mec[j] == 0 && ind == -1) {
-                    ind = j;
+                if (counter[j] == 0 && emptySlot == -1) {
+                    emptySlot = j;
                 }
             }
 
-            if (flag) {
-                if (ind != -1) {
-                    me[ind] = nums[i];
-                    mec[ind] = 1;
+            if (found) {
+                if (emptySlot != -1) {
+                    candidates[emptySlot] = nums[i];
+                    counter[emptySlot] = 1;
                 } else {
                     for (int j = 0; j < maxMajority; j++) {
-                        mec[j]--;
-                        if (mec[j] == 0)
-                            mec[j] = NULL;
+                        counter[j]--;
+                        if (counter[j] == 0)
+                            candidates[j] = INT_MAX;
                     }
                 }
             }
         }
 
-        fill(mec.begin(), mec.end(), 0);
+        fill(counter.begin(), counter.end(), 0);
         vector<int> ans;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < maxMajority; j++) {
-                if (nums[i] == me[j]) {
-                    mec[j]++;
+                if (nums[i] == candidates[j]) {
+                    counter[j]++;
                 }
             }
         }
 
         for (int j = 0; j < maxMajority; j++) {
-            if (mec[j] > n / k) {
-                ans.push_back(me[j]);
+            if (counter[j] > n / k) {
+                ans.push_back(candidates[j]);
             }
         }
 
