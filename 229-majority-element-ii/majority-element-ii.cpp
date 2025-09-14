@@ -1,35 +1,57 @@
 class Solution {
 public:
     vector<int> majorityElement(vector<int>& nums) {
-        int n=nums.size();
-        int n1, n2, c1=0, c2=0;
-        for(int i=0;i<n;i++){
-            if(n1==nums[i]){
-                c1++;
+        int k = 3;
+        int maxMajority = k - 1;
+        int n = nums.size();
+        vector<int> me(maxMajority, INT_MAX);
+        vector<int> mec(maxMajority, 0);
+
+        for (int i = 0; i < n; i++) {
+            bool flag = true;
+            int ind = -1;
+
+            for (int j = 0; j < maxMajority; j++) {
+                if (nums[i] == me[j]) {
+                    flag = false;
+                    mec[j]++;
+                    break;
+                }
+                if (mec[j] == 0 && ind == -1) {
+                    ind = j;
+                }
             }
-            else if(n2==nums[i]){
-                c2++;
-            }
-            else if(c1==0){
-                n1=nums[i];
-                c1=1;
-            }
-            else if(c2==0){
-                n2=nums[i];
-                c2=1;
-            } else {
-                c1--; c2--;
+
+            if (flag) {
+                if (ind != -1) {
+                    me[ind] = nums[i];
+                    mec[ind] = 1;
+                } else {
+                    for (int j = 0; j < maxMajority; j++) {
+                        mec[j]--;
+                        if (mec[j] == 0)
+                            mec[j] = NULL;
+                    }
+                }
             }
         }
-        vector<int>ans;
-        int f1=0;
-        int f2=0;        
-        for(int i=0;i<n;i++){
-            if(n1==nums[i]){ f1++; }
-            else if(n2==nums[i]){ f2++; }
+
+        fill(mec.begin(), mec.end(), 0);
+        vector<int> ans;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < maxMajority; j++) {
+                if (nums[i] == me[j]) {
+                    mec[j]++;
+                }
+            }
         }
-        if(f1 > n/3) ans.push_back(n1);
-        if(f2 > n/3) ans.push_back(n2);
+
+        for (int j = 0; j < maxMajority; j++) {
+            if (mec[j] > n / k) {
+                ans.push_back(me[j]);
+            }
+        }
+
         return ans;
     }
 };
