@@ -1,61 +1,64 @@
 class Solution {
 public:
-    long long merge(vector<int>&nums,int s,int m,int e){
-        vector<int>temp(e-s+1,0);
-        int l=s;
-        int r=m+1;
-        long long globalPairs=0;
-        int k=0;
-        while(l<=m && r<=e){
-            if(nums[l]>nums[r]){
-                globalPairs+=(m-l+1);
-                temp[k]=nums[r];
-                r++;
+    long long int mergesort(vector<int>& nums, int l, int h) {
+        if (l >= h) {
+            return 0;
+        }
+        int m = (l + h) / 2;
+        int ci = 0;
+        ci += mergesort(nums, l, m);
+        ci += mergesort(nums, m + 1, h);
+        ci += merge(nums, l, m, h);
+        return ci;
+    }
+
+    long long int merge(vector<int>& nums, int l, int m, int h) {
+        int ci = 0;
+        vector<int> temp(h - l + 1, 0);
+        int i = l, j = m + 1, k = 0;
+        while (i <= m && j <= h) {
+            if (nums[i] <= nums[j]) {
+                temp[k] = nums[i];
+                i++;
             } else {
-                temp[k]=nums[l];
-                l++;
+                temp[k] = nums[j];
+                ci += (m - i +1);
+                j++;
             }
             k++;
         }
-        
-        while(l<=m){
-            temp[k]=nums[l];
+
+        while (i <= m) {
+            temp[k] = nums[i];
+            i++;
             k++;
-            l++;
-        }
-        
-        while(r<=e){
-            temp[k]=nums[r];
-            k++;
-            r++;
         }
 
-        for(int i=s;i<=e;i++){
-            nums[i]=temp[i-s];
+        while (j <= h) {
+            temp[k] = nums[j];
+            j++;
+            k++;
         }
-        return globalPairs;
+
+        k = 0;
+        for (int i = l; i <= h; i++) {
+            nums[i] = temp[k++];
+        }
+
+        return ci;
     }
 
-    long long mergeSort(vector<int>&nums,int s,int e){
-        if(s>=e){ return 0; }
-        int m=(s+e)/2;
-        long long inv=0;
-        inv+=mergeSort(nums,s,m);
-        inv+=mergeSort(nums,m+1,e);
-        inv+=merge(nums,s,m,e);
-        return inv;
-    }
     bool isIdealPermutation(vector<int>& nums) {
         int n=nums.size();
-        long long local=0;
 
-        for(int i=0;i<n-1;i++){
-          if(nums[i]>nums[i+1]){
-            local++;
-          }
+        int l=0;
+        for(int i=1;i<n;i++){
+            if(nums[i-1]>nums[i]){
+                l+=1;
+            }
         }
 
-        long long global=mergeSort(nums,0,n-1);
-        return local==global;
+        long long g=mergesort(nums,0,n-1);
+        return l==g;
     }
 };
