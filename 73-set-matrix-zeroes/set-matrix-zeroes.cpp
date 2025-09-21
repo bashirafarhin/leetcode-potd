@@ -1,58 +1,64 @@
 class Solution {
 public:
-    void setZeroes(vector<vector<int>>& matrix) {
-        int R = matrix.size();
-        int C = matrix[0].size();
+    void setZeroes(vector<vector<int>>& m) {
+        int r = m.size();
+        int c = m[0].size();
+        bool fr=false;
+        bool fc=false;
 
-        // if present in 0th Col or not
-        bool isInfirstCol = false;
+        for (int i = 0; i < r; i++) {
+            if (m[i][0] == 0) {
+                fc=true;
+                break;
+            }
+        }
 
-        // if present in 1st row or not
-        bool isInfirstRow = false;
+         for (int i = 0; i < c; i++) {
+            if (m[0][i] == 0) {
+                fr=true;
+                break;
+            }
+        }
 
-        for (int r = 0; r < R; r++) {
-            for (int c = 0; c < C; c++) {
-                if (r == 0 && matrix[0][c] == 0) {
-                    isInfirstRow = true;
+        cout<<fr<<" "<<fc<<endl;
+
+        for (int i = 1; i < r; i++) {
+            for (int j = 1; j < c; j++) {
+                if(m[i][j] == 0) {
+                    m[i][0] = 0;
+                    m[0][j] = 0;
                 }
-                if (c == 0 && matrix[r][0] == 0) {
-                    isInfirstCol = true;
-                }
-                if (matrix[r][c] == 0) {
-                    matrix[r][0] = 0;
-                    matrix[0][c] = 0;
+            }
+        }
+        
+
+        for (int i = 1; i < r; i++) {
+            if (m[i][0] == 0) {
+                for (int j = 1; j < c; j++) {
+                    m[i][j] = 0;
                 }
             }
         }
 
-        for (int r = 1; r < R; r++) {
-            if (matrix[r][0] == 0) {
-                for (int c = 0; c < C; c++) {
-                    matrix[r][c] = 0;
+        for (int i = 1; i < c; i++) {
+            if (m[0][i] == 0) {
+                for (int j = 1; j < r; j++) {
+                    m[j][i] = 0;
                 }
             }
         }
 
-        for (int c = 1; c < C; c++) {
-            if (matrix[0][c] == 0) {
-                for (int r = 0; r < R; r++) {
-                    matrix[r][c] = 0;
-                }
-            }
+
+        if(fr){
+            for (int i = 0; i < c; i++) {
+            m[0][i] = 0;
+        }
         }
 
-        // if 0 present in 0th Col
-        if (isInfirstCol) {
-            for (int r = 0; r < R; r++) {
-                matrix[r][0] = 0;
-            }
+         if(fc){
+            for (int i = 0; i < r; i++) {
+            m[i][0] = 0;
         }
-
-        // if 0 present in 1st Col
-        if (isInfirstRow) {
-            for (int c = 0; c < C; c++) {
-                matrix[0][c] = 0;
-            }
         }
     }
 };
