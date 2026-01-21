@@ -1,18 +1,40 @@
 class Solution {
+
+    public static int calculate(int x) {
+        int shiftBy=0;
+        while((x & (1<<shiftBy))!=0 && shiftBy<32){
+            shiftBy++;
+        }
+       return x ^ (1<<(shiftBy-1));
+    }
+
     public int[] minBitwiseArray(List<Integer> nums) {
-        int[] ans = new int[nums.size()];
-        int i=0; 
-        while(i<nums.size()){
-            ans[i]=-1;
-            for(int j=0; j<nums.get(i); j++){
-                if((j | j+1)==nums.get(i)){
-                    System.out.println(j|j+1);
-                    ans[i]=j;
-                    break;
+        int n = nums.size();
+        int[] ans = new int[n];
+        Arrays.fill(ans, Integer.MAX_VALUE);
+        for (int i = 0; i < n; i++) {
+            if ((nums.get(i) & 1) == 1) {
+                // making last bit 0
+                Integer poss1 = nums.get(i) & (~1);
+
+                // second solution
+                Integer poss2 = calculate(nums.get(i));
+
+                System.out.println(nums.get(i)+" "+ poss1+ " "+poss2);
+
+                if ((poss1 | (poss1 + 1)) == nums.get(i)) {
+                    ans[i] = Math.min(ans[i], poss1);
                 }
+
+                if ((poss2 | (poss2 + 1)) == nums.get(i)) {
+                    ans[i] = Math.min(ans[i], poss2);
+                }
+
+            } else {
+                ans[i] = -1;
             }
-            i++;
         }
         return ans;
     }
+
 }
