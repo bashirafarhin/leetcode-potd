@@ -7,8 +7,13 @@ class Solution {
         return;
     }
 
-    public void sort(int[] nums, int start, int end) {
-        Arrays.sort(nums, start, end + 1);
+    public void reverse(int[] nums, int start, int end) {
+        while (start < end) {
+            swap(nums, start, end);
+            start++;
+            end--;
+        }
+        return;
     }
 
     public void nextPermutation(int[] nums) {
@@ -19,7 +24,7 @@ class Solution {
                 // find the least number which is just greater than i-1;
                 int ind = i;
                 for (int j = i; j < n; j++) {
-                    if (nums[j] > nums[i - 1] && nums[ind] > nums[j]) {
+                    if (nums[j] > nums[i - 1] && nums[ind] >= nums[j]) {
                         ind = j;
                     }
                 }
@@ -30,6 +35,6 @@ class Solution {
                 break;
             }
         }
-        sort(nums, pivot, n - 1);
+        reverse(nums, pivot, n - 1);
     }
 }
