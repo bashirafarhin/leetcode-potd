@@ -3,30 +3,42 @@ public:
     int numSpecial(vector<vector<int>>& mat) {
         int r = mat.size();
         int c = mat[0].size();
-        int ans = 0;
+        vector<int> ColPosWhereOneHasOccured(r, -1);
         for (int i = 0; i < r; i++) {
+            int cntOfOnes = 0;
             for (int j = 0; j < c; j++) {
                 if (mat[i][j] == 1) {
-                    int cnt = 0;
-                    for (int k = 0; k < r; k++) {
-                        cnt += mat[k][j];
-                        if (cnt > 1) {
-                            break;
-                        }
+                    if (ColPosWhereOneHasOccured[i] == -1) {
+                        ColPosWhereOneHasOccured[i] = j;
+                    } else {
+                        ColPosWhereOneHasOccured[i] = -1;
+                        break;
                     }
-                    if (cnt == 1) {
-                        cnt = 0;
-                        for (int k = 0; k < c; k++) {
-                            cnt += mat[i][k];
-                            if (cnt > 1) {
-                                break;
-                            }
-                        }
-                    }
+                }
+            }
+        }
 
-                    if (cnt == 1) {
-                        ans++;
+        vector<int> RowPosWhereOneHasOccured(c, -1);
+        for (int i = 0; i < c; i++) {
+            int cntOfOnes = 0;
+            for (int j = 0; j < r; j++) {
+                if (mat[j][i] == 1) {
+                    if (RowPosWhereOneHasOccured[i] == -1) {
+                        RowPosWhereOneHasOccured[i] = j;
+                    } else {
+                        RowPosWhereOneHasOccured[i] = -1;
+                        break;
                     }
+                }
+            }
+        }
+
+        int ans = 0;
+        for (int i = 0; i < c; i++) {
+            if (RowPosWhereOneHasOccured[i] != -1) {
+                int pos = RowPosWhereOneHasOccured[i];
+                if (ColPosWhereOneHasOccured[pos] != -1) {
+                    ans++;
                 }
             }
         }
