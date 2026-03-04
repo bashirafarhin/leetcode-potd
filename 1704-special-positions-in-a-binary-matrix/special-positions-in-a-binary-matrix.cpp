@@ -1,26 +1,35 @@
 class Solution {
 public:
     int numSpecial(vector<vector<int>>& mat) {
-      //brute force
-      int pos=0;
-      int row=mat.size();
-      int col=mat[0].size();
-      for(int i=0;i<row;i++){
-       for(int j=0;j<col;j++){
-           if(mat[i][j]==0){continue;}
+        int r = mat.size();
+        int c = mat[0].size();
+        int ans = 0;
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (mat[i][j] == 1) {
+                    int cnt = 0;
+                    for (int k = 0; k < r; k++) {
+                        cnt += mat[k][j];
+                        if (cnt > 1) {
+                            break;
+                        }
+                    }
+                    if (cnt == 1) {
+                        cnt = 0;
+                        for (int k = 0; k < c; k++) {
+                            cnt += mat[i][k];
+                            if (cnt > 1) {
+                                break;
+                            }
+                        }
+                    }
 
-             bool flag=true;
-             for(int c=0;c<col;c++){
-                 if(mat[i][c]==1 && j !=c){
-                     flag=false;break;}}
-
-             if(flag==true){
-              for(int r=0;r<row;r++){
-                 if(mat[r][j]==1 && i !=r){
-                     flag=false;break;}}}
-             if(flag==true){pos++;}       
-       }
-      }
-      return pos;
+                    if (cnt == 1) {
+                        ans++;
+                    }
+                }
+            }
+        }
+        return ans;
     }
 };
