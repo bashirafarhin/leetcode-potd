@@ -1,17 +1,26 @@
 class Solution {
 public:
     int minOperations(string s) {
-    int n=s.length();
-    int evenPosZ=0;   //zero at even position
-    int oddPosZ=0;   //zero at odd position
-    int totalEvenPos= (n % 2)==0? n/2 : n/2+1;   //total even position
-    int totalOddPos=n-totalEvenPos;   //total odd position
-    for(int i=0;i<n;i++){
-        if( (i & 1) && s[i]=='0'){oddPosZ++;}
-        else if( !(i & 1) && s[i]=='0'){evenPosZ++;}
-    }
-    int ans1=totalEvenPos-evenPosZ+oddPosZ;   //010101.....
-    int ans2=evenPosZ+totalOddPos-oddPosZ;   //101010.....
-    return min(ans1,ans2);
+        // if the string needs to be an alternating then it will either start from 0 or 1
+        int startWithZero=0;
+        int startWithOne=0;
+        for(int i=0;i<s.length();i++){
+            if(i & 1) {
+                if(s[i]=='0')
+                startWithZero++;
+
+                 if(s[i]=='1')
+                startWithOne++;
+            }
+
+            else {
+                if(s[i]=='1')
+                startWithZero++;
+
+                 if(s[i]=='0')
+                startWithOne++;
+            }
+        }
+        return min(startWithZero, startWithOne);
     }
 };
