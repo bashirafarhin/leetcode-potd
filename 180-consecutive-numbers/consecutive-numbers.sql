@@ -27,7 +27,7 @@ SELECT id, num, prev_num,
 FROM cte1
 ), cte3 as (
 SELECT num,
-SUM(new_group) OVER( ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW ) as group_id
+SUM(new_group) OVER( ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW ) as group_id
 FROM cte2
 ) SELECT DISTINCT num as ConsecutiveNums
 FROM cte3
