@@ -1,32 +1,44 @@
 class Solution {
 public:
-    int minFlips(string s) {
-        int n=s.length();
-        string news=s+s;
-        int newLen=news.length();
-        string altStartWith0="";
-        string altStartWith1="";
-        for(int i=0;i<newLen;i++){
-            if(i & 1){
-                altStartWith0+='1';
-                altStartWith1+='0';
+    string makeAltString(int n, int startsWith) {
+        string s = "";
+        for (int i = 0; i < n; i++) {
+            if (i & 1) {
+                s += startsWith == 1 ? '0' : '1';
             } else {
-                altStartWith0+='0';
-                altStartWith1+='1';
+                s += startsWith == 0 ? '0' : '1';
             }
         }
-        int diff1=0,diff2=0,count=n;
-        for(int i=0;i<newLen;i++){
-            diff1+=altStartWith0[i] !=news[i] ? 1 : 0;
-            diff2+=altStartWith1[i] !=news[i] ? 1 : 0;
-            if(i==n-1){
-                count=min(count,min(diff1,diff2));
-            } else if(i>=n){
-                diff1-=altStartWith0[i-n] !=news[i-n] ? 1 : 0;
-                diff2-=altStartWith1[i-n] !=news[i-n] ? 1 : 0;
-                count=min(count,min(diff1,diff2));
-            }
+        return s;
+    }
+
+    int minFlips(string s) {
+        int n = s.size();
+        string ns = s + s;
+        string oneAlt = makeAltString(2*n, 1);
+        string zeroAlt = makeAltString(2*n, 0);
+        int flipsIfstartsWithOne = 0;
+        int flipsIfstartsWithZero = 0;
+
+        for (int i = 0; i < n; i++) {
+            flipsIfstartsWithOne += (ns[i] != oneAlt[i]);
+            flipsIfstartsWithZero += (ns[i] != zeroAlt[i]);
         }
-        return count;
+        int ans = min(flipsIfstartsWithOne, flipsIfstartsWithZero);
+        for (int i = 1; i < n; i++) {
+            int prev= i-1;
+            int end = i + n - 1;
+
+            flipsIfstartsWithOne -= (ns[prev] != oneAlt[prev]);
+            flipsIfstartsWithZero -= (ns[prev] != zeroAlt[prev]);
+
+            flipsIfstartsWithOne += (ns[end] != oneAlt[end]);
+            flipsIfstartsWithZero += (ns[end] != zeroAlt[end]);
+            
+            int curr = min(flipsIfstartsWithOne, flipsIfstartsWithZero);
+            ans = min( ans, curr);
+
+        }
+        return ans;
     }
 };
