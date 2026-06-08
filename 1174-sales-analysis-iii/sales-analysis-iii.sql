@@ -8,11 +8,5 @@ from Product p
 join Sales s
 on p.product_id = s.product_id
 group by p.product_id
-HAVING SUM(
-    CASE
-        WHEN s.sale_date not BETWEEN '2019-01-01' AND '2019-03-31'
-        THEN 1
-        ELSE 0
-    END
-) = 0
+having MIN(s.sale_date) >= '2019-01-01' and  Max(s.sale_date) <= '2019-03-31'
 ;
