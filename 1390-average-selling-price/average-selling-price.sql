@@ -2,7 +2,7 @@
 select
 p.product_id,
 round(
-    case when units is null then 0 else sum(p.price * u.units)/sum(u.units) end
+    case when u.product_id is null then 0 else sum(p.price * u.units)/sum(u.units) end
     ,2) as average_price
 from Prices p
 left join UnitsSold u
